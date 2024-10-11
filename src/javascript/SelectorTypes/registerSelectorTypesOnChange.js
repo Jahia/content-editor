@@ -12,9 +12,7 @@ export const registerSelectorTypesOnChange = registry => {
             const sections = onChangeContext.sections;
             const fields = getFields(sections);
             const dependentPropertiesFields = fields
-                .filter(f => f.selectorOptions
-                    .find(s => s.name === 'dependentProperties' && s.value.includes(field.propertyName))
-                );
+                .filter(f => f.selectorOptions?.find(s => s.name === 'dependentProperties' && s.value.includes(field.propertyName)));
 
             Promise.all(dependentPropertiesFields.map(dependentPropertiesField => {
                 const dependentProperties = dependentPropertiesField.selectorOptions.find(f => f.name === 'dependentProperties').value.split(',');
