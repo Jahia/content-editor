@@ -52,7 +52,7 @@
     <groupId>org.jahia.test</groupId>
     <artifactId>content-editor-test-module</artifactId>
     <name>Test module for content-editor</name>
-    <version>4.11.0</version>
+    <version>4.12.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <description>This is the custom module (text-field-initializer) for content-editor cypress tests.</description>
 
