@@ -419,8 +419,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         nodeTypeFieldSet = mergeWithStaticFormFieldSets(fieldSetNodeType.getName(), nodeTypeFieldSet, processedProperties, site);
 
         if (!nodeTypeFieldSet.isRemoved()) {
-            processValueConstraints(nodeTypeFieldSet, locale, existingNode, parentNode, primaryNodeType);
-            addFieldSetToSections(formSectionsByName, nodeTypeFieldSet, locale, processedProperties);
+            addFieldSetToSections(formSectionsByName, nodeTypeFieldSet, locale, processedProperties, existingNode, parentNode, primaryNodeType);
         }
     }
 
@@ -613,7 +612,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         return value;
     }
 
-    private void addFieldSetToSections(Map<String, EditorFormSection> formSectionsByName, EditorFormFieldSet formFieldSet, Locale locale, Set<String> processedProperties) {
+    private void addFieldSetToSections(Map<String, EditorFormSection> formSectionsByName, EditorFormFieldSet formFieldSet, Locale locale, Set<String> processedProperties, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, ExtendedNodeType primaryNodeType) {
         if (Boolean.FALSE.equals(formFieldSet.getDynamic()) && formFieldSet.getEditorFormFields().isEmpty()) {
             // in the case of an empty static mixin or parent type we don't add it to the form
             return;
@@ -651,7 +650,7 @@ public class EditorFormServiceImpl implements EditorFormService {
 
         final String formFieldSetTargetSectionName = resolveMainSectionName(formFieldSet);
 
-        // We retrieve the list of fields that should be move to another fieldset
+        // We retrieve the list of fields that should be moved to another fieldset
         final List<EditorFormField>  editorFormFieldsToMove = new ArrayList<>();
         for(EditorFormField editorFormField : formFieldSet.getEditorFormFields()){
             final String fieldTargetSectionName = editorFormField.getTarget().getFieldSetName();
@@ -696,7 +695,9 @@ public class EditorFormServiceImpl implements EditorFormService {
                         editorFormSection.getFieldSets().add(editorFormFieldSet);
                         // then we add the field
                         editorFormFieldSet.addField(editorFormField);
-                        processedProperties.add(editorFormField.getName());
+                        if (editorFormField.getExtendedPropertyDefinition() != null) {
+                            processedProperties.add(editorFormField.getName());
+                        }
                     }
                 } catch (NoSuchNodeTypeException ex) {
                     logger.error(String.format("Impossible to retrieve display name for %s", fieldTargetFieldSetName), ex);
@@ -707,15 +708,33 @@ public class EditorFormServiceImpl implements EditorFormService {
         final EditorFormSection formFieldSetTargetSection = getTargetSection(formSectionsByName, formFieldSet, formFieldSetTargetSectionName);
         boolean fieldSetNotFound = true;
         for(EditorFormFieldSet editorFormFieldSet :  formFieldSetTargetSection.getFieldSets()){
-            if(editorFormFieldSet.getName().equals(formFieldSet.getName())){
+            if (editorFormFieldSet.getName().equals(formFieldSet.getName())) {
                 fieldSetNotFound = false;
+                break;
             }
         }
         if (fieldSetNotFound) {
             formFieldSetTargetSection.getFieldSets().add(formFieldSet);
             formSectionsByName.put(formFieldSetTargetSection.getName(), formFieldSetTargetSection);
+        } else {
+            logger.debug("Fieldset {} already exists in section {} we need to merge the fields", formFieldSet.getName(), formFieldSetTargetSection.getName());
+            formFieldSetTargetSection.getFieldSets().stream().filter(fs -> fs.getName().equals(formFieldSet.getName())).findFirst().ifPresent(fs -> {
+                Set<EditorFormField> mergedEditorFormFields = new LinkedHashSet<>();
+                fs.getEditorFormFields().forEach(editorFormField -> formFieldSet.getEditorFormFields().stream().filter(f -> f.getName().equals(editorFormField.getName())).findFirst().ifPresent(f -> {
+                    EditorFormField mergedWith = f.mergeWith(editorFormField);
+                    logger.debug("Merging field {} with {}", f, editorFormField);
+                    mergedEditorFormFields.add(mergedWith);
+                }));
+                fs.setEditorFormFields(mergedEditorFormFields);
+            });
         }
-
+        formFieldSetTargetSection.getFieldSets().stream().forEach(editorFormFieldSet -> {
+            try {
+                processValueConstraints(editorFormFieldSet, locale, existingNode, parentNode, primaryNodeType);
+            } catch (RepositoryException e) {
+                logger.error("Error while processing value constraints for {}", editorFormFieldSet, e);
+            }
+        });
     }
 
     private EditorFormSection getTargetSection(Map<String, EditorFormSection> formSectionsByName, EditorFormFieldSet formFieldSet, String targetSectionName){
@@ -969,6 +988,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         if (propertyDefinition != null && propertyDefinition.getSelector() == SelectorType.CHOICELIST) {
             List<EditorFormProperty> selectorOptions = editorFormField.getSelectorOptions();
             if (!selectorOptions.isEmpty()) {
+                logger.debug("Processing choice list values for property {}", editorFormField);
                 Map<String, ChoiceListInitializer> initializers = choiceListInitializerService.getInitializers();
 
                 Map<String, Object> context = new HashMap<>();
