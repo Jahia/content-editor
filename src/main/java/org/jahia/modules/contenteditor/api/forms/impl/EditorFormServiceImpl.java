@@ -269,6 +269,16 @@ public class EditorFormServiceImpl implements EditorFormService {
         return true;
     }
 
+    @Override
+    public SortedSet<EditorFormDefinition> getFormOverrides(String primaryNodeTypeName) {
+        try {
+            return staticDefinitionsRegistry.getFormDefinitionsForType(nodeTypeRegistry.getNodeType(primaryNodeTypeName));
+        } catch (NoSuchNodeTypeException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     private JCRNodeWrapper resolveNodeFromPathorUUID(String uuidOrPath, Locale locale) throws RepositoryException {
         if (StringUtils.startsWith(uuidOrPath, "/")) {
             return getSession(locale, uuidOrPath).getNode(uuidOrPath);
@@ -419,8 +429,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         nodeTypeFieldSet = mergeWithStaticFormFieldSets(fieldSetNodeType.getName(), nodeTypeFieldSet, processedProperties, site);
 
         if (!nodeTypeFieldSet.isRemoved()) {
-            processValueConstraints(nodeTypeFieldSet, locale, existingNode, parentNode, primaryNodeType);
-            addFieldSetToSections(formSectionsByName, nodeTypeFieldSet, locale, processedProperties);
+            addFieldSetToSections(formSectionsByName, nodeTypeFieldSet, locale, processedProperties, existingNode, parentNode, primaryNodeType);
         }
     }
 
@@ -458,13 +467,21 @@ public class EditorFormServiceImpl implements EditorFormService {
                 formSection.setExpanded(sectionDefinition.expanded());
 
 
-                for(EditorFormFieldSet formFieldSet : formSection.getFieldSets()){
-                    for(EditorFormFieldSet formDefinitionFieldSet : sectionDefinition.getFieldSets()){
-                        if(formFieldSet.getName().equals(formDefinitionFieldSet.getName())){
+                for (EditorFormFieldSet formFieldSet : formSection.getFieldSets()) {
+                    for (EditorFormFieldSet formDefinitionFieldSet : sectionDefinition.getFieldSets()) {
+                        if (formFieldSet.getName().equals(formDefinitionFieldSet.getName())) {
                             formFieldSet.setRank(formDefinitionFieldSet.getRank());
-                            String fieldSetDisplayName = resolveResourceKey(formDefinitionFieldSet.getDisplayName(), uiLocale, site);
+                            String key = formDefinitionFieldSet.getDisplayName();
+                            if(key != null && formFieldSet.getOriginBundle() != null && !key.contains("@")) {
+                                String resourceBundleName = jahiaTemplateManagerService.getTemplatePackageById(formFieldSet.getOriginBundle().getSymbolicName()).getResourceBundleName();
+                                key += "@" + resourceBundleName;
+                            }
+                            String fieldSetDisplayName = resolveResourceKey(key, uiLocale, site);
                             if (fieldSetDisplayName != null) {
                                 formFieldSet.setDisplayName(fieldSetDisplayName);
+                            } else if (formDefinitionFieldSet.getDisplayName() != null) {
+                                // Fallback to the form definition field set display name if it was not a resource bundle key
+                                formFieldSet.setDisplayName(formDefinitionFieldSet.getDisplayName());
                             }
                         }
                     }
@@ -595,7 +612,7 @@ public class EditorFormServiceImpl implements EditorFormService {
     private static String resolveResourceKey(String key, Locale locale, JCRSiteNode site) {
         // Copied from org.jahia.ajax.gwt.helper.UIConfigHelper.getResources
         // Todo: BACKLOG-10823 - avoid code duplication and use a static shared utility function
-        if (key == null || key.length() == 0) {
+        if (key == null || key.isEmpty()) {
             return key;
         }
         logger.debug("Resources key: {}", key);
@@ -606,14 +623,17 @@ public class EditorFormServiceImpl implements EditorFormService {
             key = StringUtils.substringBefore(key, "@");
         }
 
-        value = Messages.get(baseName, site != null ? site.getTemplatePackage() : null, key, locale, StringUtils.EMPTY);
+        value = Messages.get(baseName, site != null ? site.getTemplatePackage() : null, key, locale, null);
         if (value == null) {
             value = Messages.getInternal(key, locale);
+        }
+        if (value != null && value.startsWith("???") && baseName != null) {
+            value = null;
         }
         return value;
     }
 
-    private void addFieldSetToSections(Map<String, EditorFormSection> formSectionsByName, EditorFormFieldSet formFieldSet, Locale locale, Set<String> processedProperties) {
+    private void addFieldSetToSections(Map<String, EditorFormSection> formSectionsByName, EditorFormFieldSet formFieldSet, Locale locale, Set<String> processedProperties, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, ExtendedNodeType primaryNodeType) {
         if (Boolean.FALSE.equals(formFieldSet.getDynamic()) && formFieldSet.getEditorFormFields().isEmpty()) {
             // in the case of an empty static mixin or parent type we don't add it to the form
             return;
@@ -643,7 +663,7 @@ public class EditorFormServiceImpl implements EditorFormService {
             }
         });
         if (!toBeRemoved.isEmpty()) {
-            if(logger.isDebugEnabled()) {
+            if (logger.isDebugEnabled()) {
                 logger.debug("Removing {} fields from fieldset {}", toBeRemoved.stream().map(EditorFormField::getName).collect(Collectors.joining(",")), formFieldSet.getName());
             }
             toBeRemoved.forEach(formFieldSet.getEditorFormFields()::remove);
@@ -651,9 +671,9 @@ public class EditorFormServiceImpl implements EditorFormService {
 
         final String formFieldSetTargetSectionName = resolveMainSectionName(formFieldSet);
 
-        // We retrieve the list of fields that should be move to another fieldset
-        final List<EditorFormField>  editorFormFieldsToMove = new ArrayList<>();
-        for(EditorFormField editorFormField : formFieldSet.getEditorFormFields()){
+        // We retrieve the list of fields that should be moved to another fieldset
+        final List<EditorFormField> editorFormFieldsToMove = new ArrayList<>();
+        for (EditorFormField editorFormField : formFieldSet.getEditorFormFields()) {
             final String fieldTargetSectionName = editorFormField.getTarget().getFieldSetName();
             if (fieldTargetSectionName != null && !fieldTargetSectionName.equals(formFieldSet.getName())) {
                 editorFormFieldsToMove.add(editorFormField);
@@ -692,11 +712,14 @@ public class EditorFormServiceImpl implements EditorFormService {
                         editorFormFieldSet = new EditorFormFieldSet();
                         editorFormFieldSet.setName(fieldTargetFieldSetName);
                         editorFormFieldSet.setDisplayName(nodeType.getLabel(locale));
+                        editorFormFieldSet.setOriginBundle(formFieldSet.getOriginBundle());
                         // and add it for the section
                         editorFormSection.getFieldSets().add(editorFormFieldSet);
                         // then we add the field
                         editorFormFieldSet.addField(editorFormField);
-                        processedProperties.add(editorFormField.getName());
+                        if (editorFormField.getExtendedPropertyDefinition() != null) {
+                            processedProperties.add(editorFormField.getName());
+                        }
                     }
                 } catch (NoSuchNodeTypeException ex) {
                     logger.error(String.format("Impossible to retrieve display name for %s", fieldTargetFieldSetName), ex);
@@ -706,19 +729,37 @@ public class EditorFormServiceImpl implements EditorFormService {
 
         final EditorFormSection formFieldSetTargetSection = getTargetSection(formSectionsByName, formFieldSet, formFieldSetTargetSectionName);
         boolean fieldSetNotFound = true;
-        for(EditorFormFieldSet editorFormFieldSet :  formFieldSetTargetSection.getFieldSets()){
-            if(editorFormFieldSet.getName().equals(formFieldSet.getName())){
+        for (EditorFormFieldSet editorFormFieldSet : formFieldSetTargetSection.getFieldSets()) {
+            if (editorFormFieldSet.getName().equals(formFieldSet.getName())) {
                 fieldSetNotFound = false;
+                break;
             }
         }
         if (fieldSetNotFound) {
             formFieldSetTargetSection.getFieldSets().add(formFieldSet);
             formSectionsByName.put(formFieldSetTargetSection.getName(), formFieldSetTargetSection);
+        } else {
+            logger.debug("Fieldset {} already exists in section {} we need to merge the fields", formFieldSet.getName(), formFieldSetTargetSection.getName());
+            formFieldSetTargetSection.getFieldSets().stream().filter(fs -> fs.getName().equals(formFieldSet.getName())).findFirst().ifPresent(fs -> {
+                Set<EditorFormField> mergedEditorFormFields = new LinkedHashSet<>();
+                fs.getEditorFormFields().forEach(editorFormField -> formFieldSet.getEditorFormFields().stream().filter(f -> f.getName().equals(editorFormField.getName())).findFirst().ifPresent(f -> {
+                    EditorFormField mergedWith = f.mergeWith(editorFormField);
+                    logger.debug("Merging field {} with {}", f, editorFormField);
+                    mergedEditorFormFields.add(mergedWith);
+                }));
+                fs.setEditorFormFields(mergedEditorFormFields);
+            });
         }
-
+        formFieldSetTargetSection.getFieldSets().stream().forEach(editorFormFieldSet -> {
+            try {
+                processValueConstraints(editorFormFieldSet, locale, existingNode, parentNode, primaryNodeType);
+            } catch (RepositoryException e) {
+                logger.error("Error while processing value constraints for {}", editorFormFieldSet, e);
+            }
+        });
     }
 
-    private EditorFormSection getTargetSection(Map<String, EditorFormSection> formSectionsByName, EditorFormFieldSet formFieldSet, String targetSectionName){
+    private EditorFormSection getTargetSection(Map<String, EditorFormSection> formSectionsByName, EditorFormFieldSet formFieldSet, String targetSectionName) {
         EditorFormSection targetSection = formSectionsByName.get(targetSectionName);
         if (targetSection == null) {
             Double targetSectionRank = 1.0;
@@ -923,7 +964,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         propertyLabel = StringUtils.isEmpty(propertyLabel) ? StringEscapeUtils.unescapeHtml(item.getLabel(uiLocale, extendedNodeType)) :
             propertyLabel;
         propertyDescription = StringUtils.isEmpty(propertyDescription) ? Sanitizers.FORMATTING.sanitize(
-            item.getTooltip(uiLocale,extendedNodeType)) : propertyDescription;
+            item.getTooltip(uiLocale, extendedNodeType)) : propertyDescription;
 
         String key = itemDefinition.getResourceBundleKey() + ".constraint.error.message";
         if (itemDefinition.getDeclaringNodeType().getTemplatePackage() != null) {
@@ -969,6 +1010,7 @@ public class EditorFormServiceImpl implements EditorFormService {
         if (propertyDefinition != null && propertyDefinition.getSelector() == SelectorType.CHOICELIST) {
             List<EditorFormProperty> selectorOptions = editorFormField.getSelectorOptions();
             if (!selectorOptions.isEmpty()) {
+                logger.debug("Processing choice list values for property {}", editorFormField);
                 Map<String, ChoiceListInitializer> initializers = choiceListInitializerService.getInitializers();
 
                 Map<String, Object> context = new HashMap<>();

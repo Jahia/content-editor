@@ -23,6 +23,7 @@
  */
 package org.jahia.modules.contenteditor.api.forms;
 
+import graphql.annotations.annotationTypes.GraphQLField;
 import org.jahia.services.content.nodetypes.ExtendedNodeType;
 import org.jahia.services.content.nodetypes.NodeTypeRegistry;
 import org.osgi.framework.Bundle;
@@ -55,6 +56,7 @@ public class EditorFormDefinition implements Comparable<EditorFormDefinition> {
         this.hasPreview = hasPreview;
     }
 
+    @GraphQLField
     public String getNodeType() {
         return nodeType;
     }
@@ -63,6 +65,7 @@ public class EditorFormDefinition implements Comparable<EditorFormDefinition> {
         this.nodeType = nodeType;
     }
 
+    @GraphQLField
     public Double getPriority() {
         return priority;
     }
@@ -71,6 +74,7 @@ public class EditorFormDefinition implements Comparable<EditorFormDefinition> {
         this.priority = priority;
     }
 
+    @GraphQLField
     public Boolean hasPreview() {
         return hasPreview;
     }
@@ -79,12 +83,18 @@ public class EditorFormDefinition implements Comparable<EditorFormDefinition> {
         this.hasPreview = hasPreview;
     }
 
+    @GraphQLField
     public List<EditorFormSectionDefinition> getSections() {
         return sections;
     }
 
     public void setSections(List<EditorFormSectionDefinition> sections) {
         this.sections = sections;
+    }
+
+    @GraphQLField
+    public String getOriginBundleSymbolicName() {
+        return originBundle != null ? originBundle.getSymbolicName() : null;
     }
 
     public Bundle getOriginBundle() {

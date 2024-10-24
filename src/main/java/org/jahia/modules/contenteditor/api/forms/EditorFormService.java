@@ -23,10 +23,12 @@
  */
 package org.jahia.modules.contenteditor.api.forms;
 
+import graphql.annotations.annotationTypes.GraphQLNonNull;
 import org.jahia.modules.contenteditor.graphql.api.types.ContextEntryInput;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.SortedSet;
 
 /**
  * Main service to retrieve form for editing content
@@ -89,4 +91,6 @@ public interface EditorFormService {
                                                              List<ContextEntryInput> context,
                                                              Locale uiLocale,
                                                              Locale locale) throws EditorFormException;
+
+    SortedSet<EditorFormDefinition> getFormOverrides(@GraphQLNonNull String nodeType);
 }

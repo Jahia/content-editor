@@ -23,6 +23,8 @@
  */
 package org.jahia.modules.contenteditor.api.forms;
 
+import graphql.annotations.annotationTypes.GraphQLField;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +50,7 @@ public class EditorFormSectionDefinition {
         this.name = name;
     }
 
+    @GraphQLField
     public String getName() {
         return name;
     }
@@ -56,6 +59,7 @@ public class EditorFormSectionDefinition {
         this.name = name;
     }
 
+    @GraphQLField
     public String getLabelKey() {
         return labelKey;
     }
@@ -64,6 +68,7 @@ public class EditorFormSectionDefinition {
         this.labelKey = labelKey;
     }
 
+    @GraphQLField
     public String getDescriptionKey() {
         return descriptionKey;
     }
@@ -72,6 +77,7 @@ public class EditorFormSectionDefinition {
         this.descriptionKey = descriptionKey;
     }
 
+    @GraphQLField
     public String getRequiredPermission() {
         return requiredPermission;
     }
@@ -80,6 +86,7 @@ public class EditorFormSectionDefinition {
         this.requiredPermission = requiredPermission;
     }
 
+    @GraphQLField
     public boolean isHide() {
         return hide;
     }
@@ -88,6 +95,7 @@ public class EditorFormSectionDefinition {
         this.hide = hide;
     }
 
+    @GraphQLField
     public boolean expanded() {
         return expanded;
     }
@@ -96,6 +104,7 @@ public class EditorFormSectionDefinition {
         this.expanded = expanded;
     }
 
+    @GraphQLField
     public List<String> getDisplayModes() {
         return displayModes;
     }
@@ -104,6 +113,7 @@ public class EditorFormSectionDefinition {
         this.displayModes = displayModes;
     }
 
+    @GraphQLField
     public List<EditorFormFieldSet> getFieldSets() {
         return fieldSets;
     }
