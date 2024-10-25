@@ -48,7 +48,7 @@
         <jahia-module-type>system</jahia-module-type>
         <yarn.arguments>build:production</yarn.arguments>
         <require-capability>osgi.extender;filter:="(osgi.extender=org.jahia.bundles.blueprint.extender.config)"</require-capability>
-        <jahia-module-signature>MCwCFD/TCIKGNSSOq8Iga3EphH2K/YE0AhQQMkqhiwmB8gZTgPTeIc7Hlkwe4Q==</jahia-module-signature>
+        <jahia-module-signature>MCwCFDJj/LO34hhSD5WDZnLHZislHk+aAhR2GXbv609gb1Xad5MiAEN7buax9w==</jahia-module-signature>
         <jahia-depends>app-shell=2.7,graphql-dxm-provider=2.19.1,jcontent=2.9</jahia-depends>
         <jahia.plugin.version>6.9</jahia.plugin.version>
         <import-package>
