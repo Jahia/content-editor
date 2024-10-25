@@ -1,5 +1,4 @@
-import {Button, createSite, deleteSite, enableModule, getComponentByRole} from '@jahia/cypress';
-import {SmallTextField, DateField} from '../page-object/fields';
+import {createSite, deleteSite, enableModule} from '@jahia/cypress';
 import {JContent} from '../page-object';
 
 describe('Test that the json overrides deployed in the test modules are behaving as expected', () => {

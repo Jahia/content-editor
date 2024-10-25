@@ -19,6 +19,7 @@ export class Field extends BaseComponent {
         // Empty method
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     checkOptions(expectedOptions: string[]): void {
         // Empty method
     }

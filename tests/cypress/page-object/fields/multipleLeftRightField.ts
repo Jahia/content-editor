@@ -1,7 +1,7 @@
 import {Field} from './field';
 
 export class MultipleLeftRightField extends Field {
-    addNewValue(newValue: string, force = false) {
+    addNewValue(newValue: string) {
         this.get().find('li[role="left-list"]').contains(newValue).should('exist').click();
 
         return this;

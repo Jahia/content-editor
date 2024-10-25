@@ -1,7 +1,7 @@
 import {Field} from './field';
 
 export class DropdownField extends Field {
-    addNewValue(newValue: string, force = false) {
+    addNewValue(newValue: string) {
         this.get().find('div[role="dropdown"]').should('exist').click();
         this.get().find('menu[role="listbox"]').should('exist').find('li').contains(newValue).should('exist').click();
         return this;
