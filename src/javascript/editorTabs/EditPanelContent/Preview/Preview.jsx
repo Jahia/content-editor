@@ -22,6 +22,7 @@ export const Preview = () => {
             clearTimeout(timeout);
         };
     }, []);
+    console.log('SUP 460 | Preview.jsx | ', JSON.stringify({contentNotFound, shouldDisplayPreview}));
 
     return (
         <Paper className={styles.content}>

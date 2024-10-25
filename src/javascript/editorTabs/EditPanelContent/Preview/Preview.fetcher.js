@@ -34,6 +34,8 @@ export const PreviewFetcher = React.memo(({onContentNotFound}) => {
         };
     }, [editorContext.lang, previewContext.path, refetch]);
 
+    console.log('SUP 460 | Preview.fetcher.jsx | ', JSON.stringify({data, loading, error, previewContext}));
+
     if (error) {
         const message = t(
             'content-editor:label.contentEditor.error.queryingContent',
