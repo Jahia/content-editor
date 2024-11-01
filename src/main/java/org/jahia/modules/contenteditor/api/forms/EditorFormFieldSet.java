@@ -198,6 +198,11 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
         return editorFormFields.add(editorFormField);
     }
 
+    public void removeField(EditorFormField editorFormField) {
+        editorFormFieldsByName.remove(editorFormField.getName());
+        editorFormFields.remove(editorFormField);
+    }
+
     @Override
     public String toString() {
         return "EditorFormFieldSet{" + "nodeType='" + name + '\'' + ", originBundle=" + originBundle + ", priority=" + priority
@@ -315,13 +320,28 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
         }
 
         newEditorFormFieldSet.setRemoved(otherEditorFormFieldSet.isRemoved());
-        if (originBundle != null) {
-            newEditorFormFieldSet.setOriginBundle(getOriginBundle());
-        } else {
-            newEditorFormFieldSet.setOriginBundle(otherEditorFormFieldSet.getOriginBundle());
-        }
+        newEditorFormFieldSet.setOriginBundle(originBundle != null ? originBundle : otherEditorFormFieldSet.getOriginBundle());
 
         return newEditorFormFieldSet;
+    }
+
+    /**
+     * Add field if it does not exist in this field set, or merge it if it does.
+     * @param field to add/merge
+     */
+    public void mergeField(EditorFormField field) {
+        if (field == null) {
+            return;
+        }
+
+        EditorFormField existingField = editorFormFieldsByName.get(field.getName());
+        if (existingField != null) {
+            EditorFormField mergedField = existingField.mergeWith(field);
+            editorFormFields.remove(existingField);
+            addField(mergedField);
+        } else {
+            addField(field);
+        }
     }
 
     public EditorFormFieldTarget getTarget() {

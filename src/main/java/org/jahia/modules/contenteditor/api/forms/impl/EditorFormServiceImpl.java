@@ -298,8 +298,11 @@ public class EditorFormServiceImpl implements EditorFormService {
             Set<String> processedProperties = new HashSet<>();
             Set<String> processedNodeTypes = new HashSet<>();
 
+            // Keep track of fieldSets that have been created due to a target json override, but the nodetype has not been processed yet.
+            Set<EditorFormField> toBeMovedFields = new HashSet<>();
+
             generateAndMergeFieldSetForType(primaryNodeType, uiLocale, locale, existingNode, parentNode, primaryNodeType,
-                formSectionsByName, false, false, true, processedProperties, false);
+                formSectionsByName, false, false, true, processedProperties, toBeMovedFields, false);
             processedNodeTypes.add(primaryNodeTypeName);
 
             Set<ExtendedNodeType> nodeTypesToProcess =
@@ -307,7 +310,7 @@ public class EditorFormServiceImpl implements EditorFormService {
 
             for (ExtendedNodeType superType : nodeTypesToProcess) {
                 generateAndMergeFieldSetForType(superType, uiLocale, locale, existingNode, parentNode, primaryNodeType,
-                    formSectionsByName, false, false, true, processedProperties, false);
+                    formSectionsByName, false, false, true, processedProperties, toBeMovedFields, false);
                 processedNodeTypes.add(superType.getName());
             }
 
@@ -328,13 +331,14 @@ public class EditorFormServiceImpl implements EditorFormService {
                 }
                 boolean activated = EDIT.equals(mode) && existingNode.isNodeType(extendMixinNodeType.getName());
                 generateAndMergeFieldSetForType(extendMixinNodeType, uiLocale, locale, existingNode, parentNode, primaryNodeType,
-                    formSectionsByName, false, true, activated, processedProperties, true);
+                    formSectionsByName, false, true, activated, processedProperties, toBeMovedFields, true);
                 processedNodeTypes.add(extendMixinNodeType.getName());
             }
             // Get all form definitions to merge from the primary type.
             final SortedSet<EditorFormDefinition> formDefinitionsToMerge = staticDefinitionsRegistry.getFormDefinitionsForType(primaryNodeType);
 
-            addMixinsNodeType(primaryNodeType, uiLocale, locale, existingNode, parentNode, mode, formSectionsByName, processedProperties, processedNodeTypes, formDefinitionsToMerge);
+            addMixinsNodeType(primaryNodeType, uiLocale, locale, existingNode, parentNode, mode, formSectionsByName, processedProperties,
+                processedNodeTypes, formDefinitionsToMerge, toBeMovedFields);
 
             JCRSiteNode site = existingNode != null ? existingNode.getResolveSite() : parentNode.getResolveSite();
 
@@ -368,7 +372,10 @@ public class EditorFormServiceImpl implements EditorFormService {
         }
     }
 
-    private void addMixinsNodeType(ExtendedNodeType primaryNodeType, Locale uiLocale, Locale locale, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, String mode, Map<String, EditorFormSection> formSectionsByName, Set<String> processedProperties, Set<String> processedNodeTypes, SortedSet<EditorFormDefinition> formDefinitionsToMerge) throws RepositoryException {
+    private void addMixinsNodeType(ExtendedNodeType primaryNodeType, Locale uiLocale, Locale locale, JCRNodeWrapper existingNode,
+        JCRNodeWrapper parentNode, String mode, Map<String, EditorFormSection> formSectionsByName, Set<String> processedProperties,
+        Set<String> processedNodeTypes, SortedSet<EditorFormDefinition> formDefinitionsToMerge,
+        Set<EditorFormField> toBeMovedFields) throws RepositoryException {
 //        Add all the fields for the mixins and their supertypes added on the node
         Set<ExtendedNodeType> nodeTypesToProcess;
         if (EDIT.equals(mode)) {
@@ -379,7 +386,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                     continue;
                 }
                 generateAndMergeFieldSetForType(addMixin, uiLocale, locale, existingNode, parentNode, primaryNodeType,
-                    formSectionsByName, false, false, true, processedProperties, false);
+                    formSectionsByName, false, false, true, processedProperties, toBeMovedFields, false);
                 processedNodeTypes.add(addMixin.getName());
                 nodeTypesToProcess =
                     Arrays.stream(addMixin.getSupertypes()).collect(Collectors.toCollection(LinkedHashSet::new));
@@ -390,7 +397,7 @@ public class EditorFormServiceImpl implements EditorFormService {
                         continue;
                     }
                     generateAndMergeFieldSetForType(superType, uiLocale, locale, existingNode, parentNode, primaryNodeType,
-                        formSectionsByName, false, false, true, processedProperties, false);
+                        formSectionsByName, false, false, true, processedProperties, toBeMovedFields, false);
                     processedNodeTypes.add(superType.getName());
                 }
                 // Add mixins form definitions to merge that are set on the node.
@@ -416,9 +423,9 @@ public class EditorFormServiceImpl implements EditorFormService {
     }
 
     private void generateAndMergeFieldSetForType(ExtendedNodeType fieldSetNodeType, Locale uiLocale, Locale locale,
-                                                 JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, ExtendedNodeType primaryNodeType,
-                                                 Map<String, EditorFormSection> formSectionsByName, boolean removed, boolean dynamic, boolean activated,
-                                                 Set<String> processedProperties, boolean isForExtendMixin) throws RepositoryException {
+        JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, ExtendedNodeType primaryNodeType,
+        Map<String, EditorFormSection> formSectionsByName, boolean removed,  boolean dynamic, boolean activated,
+        Set<String> processedProperties, Set<EditorFormField> toBeMovedFields, boolean isForExtendMixin) throws RepositoryException {
 
         final boolean displayFieldSet = !fieldSetNodeType.isNodeType("jmix:templateMixin") || primaryNodeType.isNodeType("jmix:templateMixin");
         EditorFormFieldSet nodeTypeFieldSet = generateEditorFormFieldSet(processedProperties, fieldSetNodeType, primaryNodeType,
@@ -429,7 +436,8 @@ public class EditorFormServiceImpl implements EditorFormService {
         nodeTypeFieldSet = mergeWithStaticFormFieldSets(fieldSetNodeType.getName(), nodeTypeFieldSet, processedProperties, site);
 
         if (!nodeTypeFieldSet.isRemoved()) {
-            addFieldSetToSections(formSectionsByName, nodeTypeFieldSet, locale, processedProperties, existingNode, parentNode, primaryNodeType);
+            processValueConstraints(nodeTypeFieldSet, locale, existingNode, parentNode, primaryNodeType);
+            addFieldSetToSections(formSectionsByName, nodeTypeFieldSet, locale, processedProperties, toBeMovedFields);
         }
     }
 
@@ -633,55 +641,37 @@ public class EditorFormServiceImpl implements EditorFormService {
         return value;
     }
 
-    private void addFieldSetToSections(Map<String, EditorFormSection> formSectionsByName, EditorFormFieldSet formFieldSet, Locale locale, Set<String> processedProperties, JCRNodeWrapper existingNode, JCRNodeWrapper parentNode, ExtendedNodeType primaryNodeType) {
+    private void addFieldSetToSections(Map<String, EditorFormSection> formSectionsByName, EditorFormFieldSet formFieldSet, Locale locale,
+        Set<String> processedProperties, Set<EditorFormField> toBeMovedFields) {
         if (Boolean.FALSE.equals(formFieldSet.getDynamic()) && formFieldSet.getEditorFormFields().isEmpty()) {
             // in the case of an empty static mixin or parent type we don't add it to the form
             return;
         }
 
-        // Move fields to their final section/fieldset
-        List<EditorFormField> toBeRemoved = new ArrayList<>();
-        formFieldSet.getEditorFormFields().forEach(editorFormField -> {
-            String fieldSetName = editorFormField.getTarget().getFieldSetName();
-            if (!(editorFormField.getTarget() == null || fieldSetName == null || fieldSetName.equals(formFieldSet.getName()))) {
-                EditorFormSection editorFormSection = formSectionsByName.get(editorFormField.getTarget().getSectionName());
-                if (editorFormSection != null) {
-                    if (fieldSetName.equals("<main>")) {
-                        logger.debug("Moving field {} to <main> in fieldset {} of section {}", editorFormField.getName(), editorFormSection.getFieldSets().get(0).getName(), editorFormSection.getName());
-                        editorFormSection.getFieldSets().get(0).getEditorFormFields().add(editorFormField);
-                        toBeRemoved.add(editorFormField);
-                    } else {
-                        editorFormSection.getFieldSets().forEach(editorFormFieldSet -> {
-                            if (editorFormFieldSet.getName().equals(fieldSetName)) {
-                                logger.debug("Moving field {} to fieldset {} of section {}", editorFormField.getName(), editorFormFieldSet.getName(), editorFormSection.getName());
-                                editorFormFieldSet.getEditorFormFields().add(editorFormField);
-                                toBeRemoved.add(editorFormField);
-                            }
-                        });
-                    }
-                }
-            }
-        });
-        if (!toBeRemoved.isEmpty()) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Removing {} fields from fieldset {}", toBeRemoved.stream().map(EditorFormField::getName).collect(Collectors.joining(",")), formFieldSet.getName());
-            }
-            toBeRemoved.forEach(formFieldSet.getEditorFormFields()::remove);
-        }
+        /*
+         * First, add fields that have been moved previously (toBeMovedFields) but has not been processed, to this fieldset if it matches.
+         */
+        List<EditorFormField> moveFields = toBeMovedFields.stream().filter(field -> {
+            boolean isTargetFieldSet = formFieldSet.getName().equals(field.getTarget().getFieldSetName());
+            boolean isDeclaringNodeType = formFieldSet.getName().equals(field.getDeclaringNodeType());
+            return isDeclaringNodeType || isTargetFieldSet;
+        }).collect(Collectors.toList());
+        moveFields.forEach(formFieldSet::mergeField);
+        moveFields.forEach(toBeMovedFields::remove);
 
-        final String formFieldSetTargetSectionName = resolveMainSectionName(formFieldSet);
+        /*
+         * Move each field that do not belong in this fieldset i.e. fields that have a target fieldset different from formFieldSet
+         */
 
         // We retrieve the list of fields that should be moved to another fieldset
-        final List<EditorFormField> editorFormFieldsToMove = new ArrayList<>();
-        for (EditorFormField editorFormField : formFieldSet.getEditorFormFields()) {
-            final String fieldTargetSectionName = editorFormField.getTarget().getFieldSetName();
-            if (fieldTargetSectionName != null && !fieldTargetSectionName.equals(formFieldSet.getName())) {
-                editorFormFieldsToMove.add(editorFormField);
-            }
-        }
+        final List<EditorFormField>  editorFormFieldsToMove = formFieldSet.getEditorFormFields().stream()
+            .filter(editorFormField -> {
+                final String fieldTargetSectionName = editorFormField.getTarget().getFieldSetName();
+                return fieldTargetSectionName != null && !fieldTargetSectionName.equals(formFieldSet.getName());
+            }).collect(Collectors.toList());
 
         // We remove the fields from their current fieldset to prevent any duplicate
-        formFieldSet.getEditorFormFields().removeAll(editorFormFieldsToMove);
+        editorFormFieldsToMove.forEach(formFieldSet::removeField);
 
         // For each field to move
         for (EditorFormField editorFormField : editorFormFieldsToMove) {
@@ -699,64 +689,59 @@ public class EditorFormServiceImpl implements EditorFormService {
             }
 
             if (editorFormFieldSet == null) {
+                // handle <main> fieldset target
+                if (fieldTargetFieldSetName.equals("<main>") && !editorFormSection.getFieldSets().isEmpty()) {
+                    EditorFormFieldSet mainFieldSet = editorFormSection.getFieldSets().get(0);
+                    logger.debug("Moving field {} to <main> in fieldset {} of section {}",
+                        editorFormField.getName(), mainFieldSet.getName(), editorFormSection.getName());
+                    mainFieldSet.mergeField(editorFormField);
+                }
+
                 try {
                     // Check first if target fieldset is valid node type
                     final ExtendedNodeType nodeType = NodeTypeRegistry.getInstance().getNodeType(fieldTargetFieldSetName, false);
                     if (nodeType == null) {
                         logger.warn("Node type {} not found for form {}. Keeping {} field in {} fieldset.",
                             fieldTargetFieldSetName, formFieldSet.getName(), editorFormField.getName(), formFieldSet.getName());
-                        // Put that thing back where it came from, or so help me
+                        // For legacy/compatibility purposes, we add the field with a different target fieldset back to formFieldSet
+                        // in the case of just trying to move the field/fieldset to a different section.
+                        // The correct way is to specify a correct a target fieldSetName.
                         formFieldSet.getEditorFormFields().add(editorFormField);
                     } else {
-                        // Fieldset doesn't exist, so we create it
-                        editorFormFieldSet = new EditorFormFieldSet();
-                        editorFormFieldSet.setName(fieldTargetFieldSetName);
-                        editorFormFieldSet.setDisplayName(nodeType.getLabel(locale));
-                        editorFormFieldSet.setOriginBundle(formFieldSet.getOriginBundle());
-                        // and add it for the section
-                        editorFormSection.getFieldSets().add(editorFormFieldSet);
-                        // then we add the field
-                        editorFormFieldSet.addField(editorFormField);
-                        if (editorFormField.getExtendedPropertyDefinition() != null) {
-                            processedProperties.add(editorFormField.getName());
-                        }
+                        toBeMovedFields.add(editorFormField);
                     }
                 } catch (NoSuchNodeTypeException ex) {
                     logger.error(String.format("Impossible to retrieve display name for %s", fieldTargetFieldSetName), ex);
                 }
+            } else {
+                logger.debug("Moving field {} to fieldset {} of section {}",
+                    editorFormField.getName(), editorFormFieldSet.getName(), editorFormSection.getName());
+                editorFormFieldSet.mergeField(editorFormField);
+                // TODO process editorFormFieldSet constraints
             }
         }
 
+        /*
+         * Move field set to target section if it does not exist, or merge it with existing field set if it does.
+         */
+
+        final String formFieldSetTargetSectionName = resolveMainSectionName(formFieldSet);
         final EditorFormSection formFieldSetTargetSection = getTargetSection(formSectionsByName, formFieldSet, formFieldSetTargetSectionName);
-        boolean fieldSetNotFound = true;
-        for (EditorFormFieldSet editorFormFieldSet : formFieldSetTargetSection.getFieldSets()) {
-            if (editorFormFieldSet.getName().equals(formFieldSet.getName())) {
-                fieldSetNotFound = false;
-                break;
-            }
-        }
-        if (fieldSetNotFound) {
-            formFieldSetTargetSection.getFieldSets().add(formFieldSet);
-            formSectionsByName.put(formFieldSetTargetSection.getName(), formFieldSetTargetSection);
+        // check for existing field set in target section
+        EditorFormFieldSet existingFieldSet = formFieldSetTargetSection.getFieldSets().stream()
+            .filter(fs -> fs.getName().equals(formFieldSet.getName()))
+            .findFirst()
+            .orElse(null);
+        if (existingFieldSet != null) {
+            // formFieldSet already exist in target section; merge this object and replace the existing one
+            EditorFormFieldSet mergedFieldSet = existingFieldSet.mergeWith(formFieldSet, processedProperties);
+            // TODO process constraints
+            formFieldSetTargetSection.getFieldSets().remove(existingFieldSet);
+            formFieldSetTargetSection.getFieldSets().add(mergedFieldSet);
         } else {
-            logger.debug("Fieldset {} already exists in section {} we need to merge the fields", formFieldSet.getName(), formFieldSetTargetSection.getName());
-            formFieldSetTargetSection.getFieldSets().stream().filter(fs -> fs.getName().equals(formFieldSet.getName())).findFirst().ifPresent(fs -> {
-                Set<EditorFormField> mergedEditorFormFields = new LinkedHashSet<>();
-                fs.getEditorFormFields().forEach(editorFormField -> formFieldSet.getEditorFormFields().stream().filter(f -> f.getName().equals(editorFormField.getName())).findFirst().ifPresent(f -> {
-                    EditorFormField mergedWith = f.mergeWith(editorFormField);
-                    logger.debug("Merging field {} with {}", f, editorFormField);
-                    mergedEditorFormFields.add(mergedWith);
-                }));
-                fs.setEditorFormFields(mergedEditorFormFields);
-            });
+            // formFieldSet does not exist in target section; move formFieldSet
+            formFieldSetTargetSection.getFieldSets().add(formFieldSet);
         }
-        formFieldSetTargetSection.getFieldSets().stream().forEach(editorFormFieldSet -> {
-            try {
-                processValueConstraints(editorFormFieldSet, locale, existingNode, parentNode, primaryNodeType);
-            } catch (RepositoryException e) {
-                logger.error("Error while processing value constraints for {}", editorFormFieldSet, e);
-            }
-        });
     }
 
     private EditorFormSection getTargetSection(Map<String, EditorFormSection> formSectionsByName, EditorFormFieldSet formFieldSet, String targetSectionName) {
