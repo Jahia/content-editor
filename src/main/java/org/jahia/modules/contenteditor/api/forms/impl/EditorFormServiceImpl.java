@@ -669,8 +669,6 @@ public class EditorFormServiceImpl implements EditorFormService {
             toBeRemoved.forEach(formFieldSet.getEditorFormFields()::remove);
         }
 
-        final String formFieldSetTargetSectionName = resolveMainSectionName(formFieldSet);
-
         // We retrieve the list of fields that should be moved to another fieldset
         final List<EditorFormField> editorFormFieldsToMove = new ArrayList<>();
         for (EditorFormField editorFormField : formFieldSet.getEditorFormFields()) {
@@ -690,13 +688,8 @@ public class EditorFormServiceImpl implements EditorFormService {
             final EditorFormSection editorFormSection = getTargetSection(formSectionsByName, formFieldSet, fieldTargetSectionName);
 
             // We retrieve its fieldset
-            EditorFormFieldSet editorFormFieldSet = null;
             final String fieldTargetFieldSetName = editorFormField.getTarget().getFieldSetName();
-            for (EditorFormFieldSet editorFormFieldSetAvailable : editorFormSection.getFieldSets()) {
-                if (editorFormFieldSetAvailable.getName().equals(fieldTargetFieldSetName)) {
-                    editorFormFieldSet = editorFormFieldSetAvailable;
-                }
-            }
+            EditorFormFieldSet editorFormFieldSet = editorFormSection.getFieldSetByName(fieldTargetFieldSetName);
 
             if (editorFormFieldSet == null) {
                 try {
@@ -705,10 +698,14 @@ public class EditorFormServiceImpl implements EditorFormService {
                     if (nodeType == null) {
                         logger.warn("Node type {} not found for form {}. Keeping {} field in {} fieldset.",
                             fieldTargetFieldSetName, formFieldSet.getName(), editorFormField.getName(), formFieldSet.getName());
-                        // Put that thing back where it came from, or so help me
+                        // For legacy/compatibility purposes, we add the field with a different target fieldset back to formFieldSet
+                        // in the case of just trying to move the field/fieldset to a different section.
+                        // The correct way is to specify a correct target fieldSetName.
                         formFieldSet.getEditorFormFields().add(editorFormField);
                     } else {
                         // Fieldset doesn't exist, so we create it
+                        logger.debug("Moving field {} to new fieldset {} for section {}",
+                            editorFormField, fieldTargetFieldSetName, editorFormSection.getName());
                         editorFormFieldSet = new EditorFormFieldSet();
                         editorFormFieldSet.setName(fieldTargetFieldSetName);
                         editorFormFieldSet.setDisplayName(nodeType.getLabel(locale));
@@ -727,30 +724,31 @@ public class EditorFormServiceImpl implements EditorFormService {
             }
         }
 
+        /* Move/merge formFieldSet to target section */
+
+        final String formFieldSetTargetSectionName = resolveMainSectionName(formFieldSet);
         final EditorFormSection formFieldSetTargetSection = getTargetSection(formSectionsByName, formFieldSet, formFieldSetTargetSectionName);
-        boolean fieldSetNotFound = true;
-        for (EditorFormFieldSet editorFormFieldSet : formFieldSetTargetSection.getFieldSets()) {
-            if (editorFormFieldSet.getName().equals(formFieldSet.getName())) {
-                fieldSetNotFound = false;
-                break;
-            }
-        }
-        if (fieldSetNotFound) {
+        // Check for existing field set in target section
+        EditorFormFieldSet existingFieldSet = formFieldSetTargetSection.getFieldSetByName(formFieldSet.getName());
+
+        if (existingFieldSet == null) {
             formFieldSetTargetSection.getFieldSets().add(formFieldSet);
-            formSectionsByName.put(formFieldSetTargetSection.getName(), formFieldSetTargetSection);
         } else {
             logger.debug("Fieldset {} already exists in section {} we need to merge the fields", formFieldSet.getName(), formFieldSetTargetSection.getName());
-            formFieldSetTargetSection.getFieldSets().stream().filter(fs -> fs.getName().equals(formFieldSet.getName())).findFirst().ifPresent(fs -> {
-                Set<EditorFormField> mergedEditorFormFields = new LinkedHashSet<>();
-                fs.getEditorFormFields().forEach(editorFormField -> formFieldSet.getEditorFormFields().stream().filter(f -> f.getName().equals(editorFormField.getName())).findFirst().ifPresent(f -> {
+            Set<EditorFormField> mergedEditorFormFields = new LinkedHashSet<>();
+            existingFieldSet.getEditorFormFields().forEach(editorFormField -> {
+                EditorFormField f = formFieldSet.getFieldByName(editorFormField.getName());
+                if (f != null) {
                     EditorFormField mergedWith = f.mergeWith(editorFormField);
                     logger.debug("Merging field {} with {}", f, editorFormField);
                     mergedEditorFormFields.add(mergedWith);
-                }));
-                fs.setEditorFormFields(mergedEditorFormFields);
+                }
             });
+            existingFieldSet.setEditorFormFields(mergedEditorFormFields);
         }
-        formFieldSetTargetSection.getFieldSets().stream().forEach(editorFormFieldSet -> {
+
+        // Process value constraints after merge
+        formFieldSetTargetSection.getFieldSets().forEach(editorFormFieldSet -> {
             try {
                 processValueConstraints(editorFormFieldSet, locale, existingNode, parentNode, primaryNodeType);
             } catch (RepositoryException e) {

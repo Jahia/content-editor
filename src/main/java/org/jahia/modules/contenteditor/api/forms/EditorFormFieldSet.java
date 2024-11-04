@@ -324,6 +324,10 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
         return newEditorFormFieldSet;
     }
 
+    public EditorFormField getFieldByName(String name) {
+        return editorFormFieldsByName.get(name);
+    }
+
     public EditorFormFieldTarget getTarget() {
         return target;
     }

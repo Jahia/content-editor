@@ -6,9 +6,8 @@ describe('Test that the json overrides deployed in the test modules are behaving
     const langEN = 'en';
     const langFR = 'fr';
     const langDE = 'de';
-    const languages = langEN + ',' + langFR + ',' + langDE;
     const siteConfig = {
-        languages: languages,
+        languages: `${langEN},${langFR},${langDE}`,
         templateSet: 'dx-base-demo-templates',
         serverName: 'localhost',
         locale: langEN
@@ -21,16 +20,12 @@ describe('Test that the json overrides deployed in the test modules are behaving
     });
 
     after(function () {
+        cy.logout();
         deleteSite(siteKey);
     });
 
-    after(function () {
-        cy.logout();
-        cy.executeGroovy('deleteSite.groovy', {SITEKEY: siteKey});
-    });
-
     beforeEach(() => {
-        cy.loginEditor();
+        cy.loginAndStoreSession();
         jcontent = JContent.visit(siteKey, 'en', 'content-folders/contents');
     });
 
@@ -43,7 +38,9 @@ describe('Test that the json overrides deployed in the test modules are behaving
         cy.get('@articles').eq(1).should('contain.text', 'ZA de type zigzag');
         cy.get('@articles').eq(2).should('contain.text', 'Création automatique de la pagination');
         const dropdownField = contentEditor.getDropdownField('cemix:autoCreatePager_customPageSize');
-        // Definition define a list liek 2,3,4,5 we overrides with only 1,3
+        // Definition define a list like 2,3,4,5 we override with only 1,3
+        // Note that this is not a valid override as the list is not a subset of the original list. It's just testing to make sure value
+        // constraints are being taken into account.
         dropdownField.checkOptions(['1', '3']);
         dropdownField.addNewValue('3');
         dropdownField.checkValue('3');
@@ -53,5 +50,6 @@ describe('Test that the json overrides deployed in the test modules are behaving
         multipleLeftRightField.checkOptions(['Anime: Albator', 'Anime: Goldorak']);
         multipleLeftRightField.addNewValue('Anime: Albator');
         multipleLeftRightField.checkValues(['Anime: Albator']);
+        contentEditor.cancelAndDiscard();
     });
 });
