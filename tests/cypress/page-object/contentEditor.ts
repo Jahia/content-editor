@@ -8,7 +8,15 @@ import {
     Menu
 } from '@jahia/cypress';
 import {ComponentType} from '@jahia/cypress/src/page-object/baseComponent';
-import {Field, PickerField, RichTextField, SmallTextField, DateField} from './fields';
+import {
+    DateField,
+    DropdownField,
+    Field,
+    MultipleLeftRightField,
+    PickerField,
+    RichTextField,
+    SmallTextField
+} from './fields';
 import {LanguageSwitcher} from './languageSwitcher';
 import {AdvancedOptions} from './advancedOptions';
 
@@ -132,6 +140,14 @@ export class ContentEditor extends BasePage {
 
     getDateField(fieldName: string): DateField {
         return this.getField(DateField, fieldName);
+    }
+
+    getMultipleLeftRightField(fieldName: string): DateField {
+        return this.getField(MultipleLeftRightField, fieldName);
+    }
+
+    getDropdownField(fieldName: string): DateField {
+        return this.getField(DropdownField, fieldName);
     }
 
     getField<FieldType extends Field>(FieldComponent: ComponentType<FieldType>, fieldName: string,

@@ -26,10 +26,7 @@ package org.jahia.modules.contenteditor.graphql.api;
 import graphql.annotations.annotationTypes.*;
 import org.jahia.api.Constants;
 import org.jahia.data.templates.JahiaTemplatesPackage;
-import org.jahia.modules.contenteditor.api.forms.EditorForm;
-import org.jahia.modules.contenteditor.api.forms.EditorFormException;
-import org.jahia.modules.contenteditor.api.forms.EditorFormFieldValueConstraint;
-import org.jahia.modules.contenteditor.api.forms.EditorFormService;
+import org.jahia.modules.contenteditor.api.forms.*;
 import org.jahia.modules.contenteditor.graphql.api.definitions.GqlNodeTypeTreeEntry;
 import org.jahia.modules.contenteditor.graphql.api.types.ContextEntryInput;
 import org.jahia.modules.contenteditor.utils.ContentEditorUtils;
@@ -208,6 +205,15 @@ public class GqlEditorForms {
         }
 
         return count;
+    }
+
+    @GraphQLField
+    @GraphQLName("getOverrides")
+    @GraphQLDescription("Get a list of all the overrides define on the system for a nodetype")
+    public SortedSet<EditorFormDefinition> getFormOverrides(
+        @GraphQLName("primaryNodeType") @GraphQLNonNull @GraphQLDescription("The primary node type name identifying the form we want to retrieve") String nodeType)
+        throws EditorFormException {
+        return editorFormService.getFormOverrides(nodeType);
     }
 
     private String getConfigPath(String moduleId, String resource) {

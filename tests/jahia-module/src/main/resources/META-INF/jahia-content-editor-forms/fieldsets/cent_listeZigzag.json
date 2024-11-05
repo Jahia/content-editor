@@ -1,0 +1,114 @@
+{
+  "name": "cent:listeZigzag",
+  "priority": 2.0,
+  "fields": [
+    {
+      "name": "jcr:title",
+      "declaringNodeType": "cemix:zoneContenantShortNews",
+      "removed": false,
+      "defaultValues": [
+        {
+          "value": "ZigZag",
+          "type": "String"
+        }
+      ],
+      "selectorType": "Text",
+      "selectorOptions": [],
+      "target": {
+        "sectionName": "content",
+        "fieldSetName": "mix:title",
+        "rank": 0.0
+      }
+    },
+    {
+      "name": "titre",
+      "declaringNodeType": "cent:listeZigzag",
+      "removed": false,
+      "target": {
+        "sectionName": "content",
+        "fieldSetName": "cent:listeZigzag",
+        "rank": 1.0
+      }
+    },
+    {
+      "name": "chapo",
+      "declaringNodeType": "cent:listeZigzag",
+      "removed": false,
+      "target": {
+        "sectionName": "content",
+        "fieldSetName": "cent:listeZigzag",
+        "rank": 2.0
+      }
+    },
+    {
+      "name": "picto",
+      "declaringNodeType": "cent:listeZigzag",
+      "removed": false,
+      "target": {
+        "sectionName": "content",
+        "fieldSetName": "cent:listeZigzag",
+        "rank": 3.0
+      }
+    },
+    {
+      "name": "type",
+      "declaringNodeType": "cent:listeZigzag",
+      "removed": false,
+      "target": {
+        "sectionName": "content",
+        "fieldSetName": "cent:listeZigzag",
+        "rank": 4.0
+      }
+    },
+    {
+      "name": "responsable",
+      "displayName": "Responsable",
+      "declaringNodeType": "cemix:zoneContenantShortNews",
+      "removed": false,
+      "requiredType": "WEAKREFERENCE",
+      "selectorType": "MultipleLeftRightSelector",
+      "selectorOptions": [
+        {
+          "name": "animeHero"
+        }
+      ],
+      "valueConstraints": [],
+      "defaultValues": [],
+      "target": {
+        "sectionName": "content",
+        "fieldSetName": "cemix:zoneContenantShortNews",
+        "rank": 6.0
+      }
+    },
+    {
+      "name": "customPageSize",
+      "declaringNodeType": "cent:listeZigzag",
+      "removed": false,
+      "valueConstraints": [
+        {
+          "value":{
+            "type": "Long",
+            "value": "1"
+          },
+          "displayValue": "1",
+          "displayValueKey": "1",
+          "propertyList": []
+        },
+        {
+          "value":{
+            "type": "Long",
+            "value": "3"
+          },
+          "displayValue": "3",
+          "displayValueKey": "3",
+          "propertyList": []
+        }
+      ],
+      "target": {
+        "sectionName": "content",
+        "fieldSetName": "cemix:autoCreatePager",
+        "rank": 5.0
+      }
+    }
+  ]
+}

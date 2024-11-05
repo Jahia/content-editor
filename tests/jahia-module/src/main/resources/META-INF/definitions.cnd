@@ -2,6 +2,7 @@
 <jnt = 'http://www.jahia.org/jahia/nt/1.0'>
 <mix = 'http://www.jcp.org/jcr/mix/1.0'>
 <cent = 'http://www.jahia.org/ce/nt/1.0'>
+<cemix = 'http://www.jahia.org/ce/mix/1.0'>
 
 [cent:textFieldInitializer] > jnt:content, jmix:basicContent, jmix:editorialContent, mix:title noquery
  - defaultString (string) = 'Default string'
@@ -60,3 +61,25 @@
  - buttonTransverse (boolean)
 
 [cent:previewWrapper] > jnt:content, jmix:basicContent
+
+
+// Definitions for test related to story https://jira.jahia.org/browse/QA-15345
+[cemix:zoneContenantShortNews] > jmix:editorialContent, jmix:list, mix:title mixin
+ - jcr:title (string) mandatory
+ - responsable (string, choicelist[animeHero]) multiple
+ - pathPage (string) hidden
+ - ordreSnZA (string) hidden
+
+[cemix:autoCreatePager] mixin
+ - customPageSize (long) = '6' mandatory indexed=no
+ + pager (jnt:pager) = jnt:pager autocreated
+
+
+
+[cent:listeZigzag] > cemix:zoneContenantShortNews, jnt:content, cemix:autoCreatePager, jmix:structuredContent
+ - titre (string)
+ - chapo (string, richtext[ckeditor.nodetype='paragraphe'])
+ - picto (string, choicelist[script='icons.groovy'])
+ - type (string, choicelist[resourceBundle]) mandatory < 'Droite', 'Gauche'
+ - nombre (long, choicelist) hidden < '[2,2]', '[3,3]', '[4,4]', '[5,5]'
+ - customPageSize (long, choicelist) mandatory < '[2,2]', '[3,3]', '[4,4]', '[5,5]'

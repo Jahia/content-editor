@@ -135,4 +135,20 @@ public class EditorFormSection {
     public void setExpanded(boolean expanded) {
         this.expanded = expanded;
     }
+
+    /**
+     *
+     * @param fieldSetName name of field set to look for in this section
+     * @return EditorFormFieldSet that matches given name, or null if not found.
+     */
+    public EditorFormFieldSet getFieldSetByName(String fieldSetName) {
+        if (fieldSetName == null || fieldSetName.isEmpty()) {
+            return null;
+        }
+
+        return getFieldSets().stream()
+            .filter(fs -> fs.getName().equals(fieldSetName))
+            .findFirst()
+            .orElse(null);
+    }
 }

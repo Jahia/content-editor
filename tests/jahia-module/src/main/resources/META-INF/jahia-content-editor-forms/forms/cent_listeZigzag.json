@@ -1,0 +1,31 @@
+{
+    "nodeType": "cent:listeZigzag",
+    "priority": 2.0,
+    "sections": [
+        {
+            "name": "content",
+            "expanded": true,
+            "fieldSets": [
+                {
+                    "name": "mix:title",
+                    "displayName": "cemix_zoneContenantShortNews.jcr_title",
+                    "rank": 0.0
+                },
+                {
+                    "name": "cent:listeZigzag",
+                    "displayName": "cent_listeZigzag",
+                    "rank": 1.0
+                },
+                {
+                    "name": "cemix:zoneContenantShortNews",
+                    "displayName": "Test override without resource bundle key",
+                    "rank": 4.0
+                },
+                {
+                    "name": "cemix:autoCreatePager",
+                    "rank": 3.0
+                }
+            ]
+        }
+    ]
+}

@@ -315,8 +315,17 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
         }
 
         newEditorFormFieldSet.setRemoved(otherEditorFormFieldSet.isRemoved());
+        if (originBundle != null) {
+            newEditorFormFieldSet.setOriginBundle(getOriginBundle());
+        } else {
+            newEditorFormFieldSet.setOriginBundle(otherEditorFormFieldSet.getOriginBundle());
+        }
 
         return newEditorFormFieldSet;
+    }
+
+    public EditorFormField getFieldByName(String name) {
+        return editorFormFieldsByName.get(name);
     }
 
     public EditorFormFieldTarget getTarget() {
