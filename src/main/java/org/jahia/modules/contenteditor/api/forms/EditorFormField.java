@@ -24,11 +24,15 @@
 package org.jahia.modules.contenteditor.api.forms;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import org.jahia.modules.graphql.provider.dxm.node.GqlJcrPropertyType;
 import org.jahia.services.content.nodetypes.ExtendedPropertyDefinition;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,6 +44,7 @@ public class EditorFormField implements Comparable<EditorFormField> {
     private static final Comparator<EditorFormField> editorFormFieldComparator = Comparator
         .comparing(EditorFormField::getTarget, Comparator.nullsFirst(EditorFormFieldTarget::compareTo))
         .thenComparing(EditorFormField::getName, Comparator.nullsFirst(String::compareToIgnoreCase));
+    private static final ObjectMapper objectMapper = new ObjectMapper();
     private String name;
     private String displayName;
     private String description;
@@ -114,7 +119,19 @@ public class EditorFormField implements Comparable<EditorFormField> {
             if (value instanceof Map) {
                 serializeMap(baseKey + key + ".", (Map<String, Object>) value);
             } else if (value instanceof List) {
-                selectorOptions.add(new EditorFormProperty(baseKey + key, (List<String>) value));
+                List<String> jsonStringList = ((List<?>) value).stream().map(item -> {
+                    if(item instanceof Map || item instanceof List){
+                        try {
+                            return objectMapper.writeValueAsString(item);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            return null;
+                        }
+                    }else{
+                        return item.toString();
+                    }
+                }).collect(Collectors.toList());
+                selectorOptions.add(new EditorFormProperty(baseKey + key, jsonStringList));
             } else {
                 selectorOptions.add(new EditorFormProperty(baseKey + key, value.toString()));
             }
