@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Paper} from '@material-ui/core';
 import styles from './IframeViewer.scss';
@@ -49,61 +49,50 @@ function loadAssets(assets, iframeDocument) {
     return Promise.all(assets.map(asset => loadAsset(asset, iframeHeadEl)));
 }
 
-function writeInIframe(html, iframeWindow) {
-    return new Promise((resolve, reject) => {
-        iframeWindow.document.open();
-        iframeWindow.onload = resolve;
-        iframeWindow.onerror = reject;
-        iframeWindow.document.write(html);
-        iframeWindow.document.close();
-    });
-}
-
 export const IframeViewer = ({previewContext, data, onContentNotFound}) => {
     const [loading, setLoading] = useState(true);
     const editorContext = useContentEditorContext();
     const {t} = useTranslation('content-editor');
     const iframeRef = useRef(null);
-
-    const renderIFrame = useCallback(() => {
-        const element = iframeRef.current;
-
-        if (!element) {
-            return;
-        }
-
-        setLoading(true);
-        let displayValue = data && data.nodeByPath && data.nodeByPath.renderedContent ? data.nodeByPath.renderedContent.output : '';
-        if (displayValue === '') {
-            displayValue = t('label.contentManager.contentPreview.noViewAvailable');
-        }
-
-        const iframeWindow = element.contentWindow || element;
-        writeInIframe(displayValue, iframeWindow)
-            .then(() => {
-                iframeWindow.document.body.setAttribute('style', 'pointer-events: none');
-            })
-            .then(() => {
-                const assets = data && data.nodeByPath && data.nodeByPath.renderedContent ?
-                    data.nodeByPath.renderedContent.staticAssets :
-                    [];
-                return loadAssets(assets, iframeWindow.document);
-            })
-            .catch(err => console.error('Error in the preview', err))
-            .then(() => {
-                // No zoom on full if no content wrapped in the page
-                if (previewContext.requestAttributes) {
-                    zoom(iframeWindow.document, onContentNotFound, editorContext);
-                }
-            })
-            .then(() => {
-                setLoading(false);
-            });
-    }, [data, editorContext, onContentNotFound, previewContext.requestAttributes, t]);
+    const onLoadTimeoutRef = useRef(null);
+    let displayValue = data && data.nodeByPath && data.nodeByPath.renderedContent ? data.nodeByPath.renderedContent.output : '';
+    if (displayValue === '') {
+        displayValue = t('label.contentManager.contentPreview.noViewAvailable');
+    }
 
     useEffect(() => {
-        renderIFrame();
-    }, [renderIFrame]);
+        // Add a timer to always remove the loader and click on links after 5 seconds
+        onLoadTimeoutRef.current = setTimeout(() => {
+            console.debug('iframe onLoad did not trigger, remove loader and disable click events');
+            const element = iframeRef.current;
+            const iframeWindow = element.contentWindow || element;
+            iframeWindow.document.body.setAttribute('style', 'pointer-events: none');
+            setLoading(false);
+        }, 5000);
+        return () => clearTimeout(onLoadTimeoutRef.current);
+    }, []);
+
+    const onLoad = () => {
+        try {
+            console.debug('Preview loaded, add assets and remove loader');
+            const element = iframeRef.current;
+            const iframeWindow = element.contentWindow || element;
+            iframeWindow.document.body.setAttribute('style', 'pointer-events: none');
+
+            const assets = data && data.nodeByPath && data.nodeByPath.renderedContent ?
+                data.nodeByPath.renderedContent.staticAssets : [];
+            loadAssets(assets, iframeWindow.document);
+
+            if (previewContext.requestAttributes) {
+                zoom(iframeWindow.document, onContentNotFound, editorContext);
+            }
+        } catch (e) {
+            console.error('Error while processing preview', e);
+        }
+
+        setLoading(false);
+        clearTimeout(onLoadTimeoutRef.current);
+    };
 
     return (
         <Paper elevation={1} classes={{root: styles.contentPaper}}>
@@ -112,6 +101,9 @@ export const IframeViewer = ({previewContext, data, onContentNotFound}) => {
                     aria-labelledby="preview-tab"
                     data-sel-role={previewContext.workspace + '-preview-frame'}
                     className={`${styles.iframe} ${loading ? styles.iframeLoading : ''}`}
+                    srcDoc={displayValue}
+                    sandbox="allow-same-origin allow-scripts"
+                    onLoad={onLoad}
             />
         </Paper>
     );
