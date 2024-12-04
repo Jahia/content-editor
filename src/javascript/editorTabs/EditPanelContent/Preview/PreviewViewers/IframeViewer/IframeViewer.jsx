@@ -61,16 +61,17 @@ export const IframeViewer = ({previewContext, data, onContentNotFound}) => {
     }
 
     useEffect(() => {
+        setLoading(true);
         // Add a timer to always remove the loader and click on links after 5 seconds
         onLoadTimeoutRef.current = setTimeout(() => {
             console.debug('iframe onLoad did not trigger, remove loader and disable click events');
             const element = iframeRef.current;
             const iframeWindow = element.contentWindow || element;
-            iframeWindow.document.body.setAttribute('style', 'pointer-events: none');
+            iframeWindow?.document?.body?.setAttribute('style', 'pointer-events: none');
             setLoading(false);
         }, 5000);
         return () => clearTimeout(onLoadTimeoutRef.current);
-    }, []);
+    }, [displayValue]);
 
     const onLoad = () => {
         try {
@@ -79,9 +80,11 @@ export const IframeViewer = ({previewContext, data, onContentNotFound}) => {
             const iframeWindow = element.contentWindow || element;
             iframeWindow.document.body.setAttribute('style', 'pointer-events: none');
 
-            const assets = data && data.nodeByPath && data.nodeByPath.renderedContent ?
-                data.nodeByPath.renderedContent.staticAssets : [];
-            loadAssets(assets, iframeWindow.document);
+            if (previewContext.contextConfiguration !== 'page') {
+                const assets = data && data.nodeByPath && data.nodeByPath.renderedContent ?
+                    data.nodeByPath.renderedContent.staticAssets : [];
+                loadAssets(assets, iframeWindow.document);
+            }
 
             if (previewContext.requestAttributes) {
                 zoom(iframeWindow.document, onContentNotFound, editorContext);
@@ -112,7 +115,8 @@ export const IframeViewer = ({previewContext, data, onContentNotFound}) => {
 IframeViewer.propTypes = {
     previewContext: PropTypes.shape({
         workspace: PropTypes.string.isRequired,
-        requestAttributes: PropTypes.array
+        requestAttributes: PropTypes.array,
+        contextConfiguration: PropTypes.string
     }).isRequired,
     onContentNotFound: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired
