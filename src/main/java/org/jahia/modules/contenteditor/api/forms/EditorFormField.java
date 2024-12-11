@@ -124,7 +124,6 @@ public class EditorFormField implements Comparable<EditorFormField> {
                         try {
                             return objectMapper.writeValueAsString(item);
                         } catch (Exception e) {
-                            e.printStackTrace();
                             return null;
                         }
                     }else{
