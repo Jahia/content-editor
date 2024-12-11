@@ -12,15 +12,30 @@ const variantMapper = {
     DateTimePicker: 'datetime'
 };
 
+function getDateFormat(editorContext) {
+    const userNavigatorLocale = editorContext.browserLang;
+    const allowedOverridesDateFormat = ['MM/DD/YYYY', 'DD/MM/YYYY'];
+
+    // Read date format from config
+    const forceDateFormat = window.contextJsParameters?.config?.contentEditor?.forceDateFormat;
+    if (forceDateFormat && !allowedOverridesDateFormat.includes(forceDateFormat)) {
+        console.warn(`forceDateFormat as been set to an invalid value (${forceDateFormat}). Please use one of the following values: ${allowedOverridesDateFormat.join(', ')}`);
+    } else if (forceDateFormat) {
+        return forceDateFormat;
+    }
+
+    // Fallback on browser language date format
+    return userNavigatorLocale in specificDateFormat ? specificDateFormat[userNavigatorLocale] : 'DD/MM/YYYY';
+}
+
 export const DateTimePicker = ({id, field, value, editorContext, onChange, onBlur}) => {
     const variant = variantMapper[field.selectorType];
     const isDateTime = variant === 'datetime';
     const disabledDays = fillDisabledDaysFromJCRConstraints(field, isDateTime);
 
-    const userNavigatorLocale = editorContext.browserLang;
+    const dateFormat = getDateFormat(editorContext);
 
-    let dateFormat = userNavigatorLocale in specificDateFormat ? specificDateFormat[userNavigatorLocale] : 'DD/MM/YYYY';
-    let displayDateFormat = isDateTime ? (dateFormat + ' HH:mm') : dateFormat;
+    const displayDateFormat = isDateTime ? (dateFormat + ' HH:mm') : dateFormat;
 
     let maskLocale = String(dateFormat).replace(/[^\W]+?/g, '_');
 

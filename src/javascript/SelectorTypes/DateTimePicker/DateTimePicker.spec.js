@@ -114,4 +114,26 @@ describe('DateTimePicker component', () => {
 
         expect(cmp.props().dayPickerProps.disabledDays).toEqual([{before: new Date('2019-06-04T00:00:00.000')}]);
     });
+
+    it('should use the override date format when provided', () => {
+        window.contextJsParameters = {
+            config: {
+                contentEditor: {
+                    forceDateFormat: 'MM/DD/YYYY'
+                }
+            }
+        };
+        testDateFormat('de-DE', 'MM/DD/YYYY');
+    });
+
+    it('should NOT use the override date format when an invalid format is provided', () => {
+        window.contextJsParameters = {
+            config: {
+                contentEditor: {
+                    forceDateFormat: 'MM/DD/INVALID'
+                }
+            }
+        };
+        testDateFormat('de-DE', 'DD.MM.YYYY');
+    });
 });
