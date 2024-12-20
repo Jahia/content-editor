@@ -34,7 +34,7 @@
     </parent>
     <artifactId>content-editor</artifactId>
     <name>Jahia Content Editor</name>
-    <version>4.13.0-SNAPSHOT</version>
+    <version>4.13.0</version>
     <packaging>bundle</packaging>
     <description>Jahia Content Editor React extension.</description>
 
@@ -42,7 +42,7 @@
         <connection>scm:git:git@github.com:Jahia/content-editor.git</connection>
         <developerConnection>scm:git:git@github.com:Jahia/content-editor.git</developerConnection>
         <url>https://github.com/Jahia/content-editor</url>
-        <tag>master</tag>
+        <tag>4_13_0</tag>
     </scm>
     <properties>
         <jahia-module-type>system</jahia-module-type>
