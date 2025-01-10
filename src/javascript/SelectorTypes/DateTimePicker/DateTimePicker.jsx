@@ -17,7 +17,7 @@ function getDateFormat(editorContext) {
     const allowedOverridesDateFormat = ['MM/DD/YYYY', 'DD/MM/YYYY'];
 
     // Read date format from config
-    const forceDateFormat = window.contextJsParameters?.config?.contentEditor?.forceDateFormat;
+    const forceDateFormat = window.contextJsParameters?.config?.contentEditor?.forceDateFormat?.trim();
     if (forceDateFormat && !allowedOverridesDateFormat.includes(forceDateFormat)) {
         console.warn(`forceDateFormat as been set to an invalid value (${forceDateFormat}). Please use one of the following values: ${allowedOverridesDateFormat.join(', ')}`);
     } else if (forceDateFormat) {
