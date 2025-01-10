@@ -126,6 +126,17 @@ describe('DateTimePicker component', () => {
         testDateFormat('de-DE', 'MM/DD/YYYY');
     });
 
+    it('should use the override date format when provided with leading/trailing spaces', () => {
+        window.contextJsParameters = {
+            config: {
+                contentEditor: {
+                    forceDateFormat: '  MM/DD/YYYY   '
+                }
+            }
+        };
+        testDateFormat('de-DE', 'MM/DD/YYYY');
+    });
+
     it('should NOT use the override date format when an invalid format is provided', () => {
         window.contextJsParameters = {
             config: {
