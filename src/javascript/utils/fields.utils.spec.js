@@ -281,7 +281,10 @@ describe('EditPanel utils', () => {
             formValues: {
                 [sections[0].fieldSets[2].name + '_prop']: ''
             },
-            ExpectedPropsToDelete: ['prop'],
+            ExpectedPropsToDelete: [{
+                language: 'fr',
+                name: 'prop'
+            }],
             expectedPropsFieldMapping: {
                 prop: sections[0].fieldSets[2].name + '_prop'
             }
@@ -299,7 +302,10 @@ describe('EditPanel utils', () => {
             formValues: {
                 [sections[0].fieldSets[2].name + '_prop']: null
             },
-            ExpectedPropsToDelete: ['prop'],
+            ExpectedPropsToDelete: [{
+                language: 'fr',
+                name: 'prop'
+            }],
             expectedPropsFieldMapping: {
                 prop: sections[0].fieldSets[2].name + '_prop'
             }
@@ -317,7 +323,10 @@ describe('EditPanel utils', () => {
             formValues: {
                 [sections[0].fieldSets[2].name + '_prop']: undefined
             },
-            ExpectedPropsToDelete: ['prop'],
+            ExpectedPropsToDelete: [{
+                language: 'fr',
+                name: 'prop'
+            }],
             expectedPropsFieldMapping: {
                 prop: sections[0].fieldSets[2].name + '_prop'
             }

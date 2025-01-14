@@ -100,7 +100,10 @@ function updateValue({field, value, lang, nodeData, sections, mixinsToMutate, pr
                 (fieldSetName &&
                     !mixinsToMutate.mixinsToDelete.includes(fieldSetName) &&
                     (hasNodeMixin(nodeData, fieldSetName) || mixinsToMutate.mixinsToAdd.includes(fieldSetName)))) {
-                propsToDelete.push(field.propertyName);
+                propsToDelete.push({
+                    name: field.propertyName,
+                    language: lang
+                });
             }
         }
     }
