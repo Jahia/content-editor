@@ -90,5 +90,6 @@ describe('System name test', () => {
         pageComposer.checkSystemNameSync('-1-1-', '1-1');
         pageComposer.checkSystemNameSync('éàöäèü', 'eaoaeu');
         pageComposer.checkSystemNameSync('[]-{}-()-!!', '');
+        pageComposer.checkSystemNameSync('test\'fb1’fb2', 'test-fb1-fb2');
     });
 });
