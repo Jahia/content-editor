@@ -69,7 +69,8 @@
             "unknown": "Gesperrt: aus unbekanntem Grund"
           },
           "publish": {
-            "name": "Jetzt veröffentlichen",
+            "name": "Jetzt veröffentlichen - {{language}}",
+            "shortName": "Jetzt veröffentlichen",
             "namePolling": "Veröffentlichung",
             "success": "Veröffentlichung der Warteschlange hinzugefügt",
             "error": "Fehler während Veröffentlichung"

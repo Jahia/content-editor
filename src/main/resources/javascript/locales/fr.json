@@ -12,11 +12,11 @@
         "advanced": "Mode avancé"
       },
       "edit": {
-        "title": "Éditer le contenu",
-        "contentEdit": "Editer le contenu",
+        "title": "Modifier le contenu",
+        "contentEdit": "Modifier le contenu",
         "validation": {
           "required": "Requis",
-          "invalidForm": "Formulaire non valide",
+          "invalidForm": "Formulaire invalide",
           "fieldsInError": "Un champ en erreur",
           "fieldsInError_plural": "{{count}} champs en erreur",
           "otherLanguages": "Autres langues en erreur"
@@ -26,7 +26,7 @@
             "bottomText": "En cliquant sur \"APPLIQUER\" vous remplacerez les valeurs actuelles des champs par celles de la langue choisie.",
             "btnApply": "Appliquer",
             "btnCancel": "Annuler",
-            "currentLanguage": "Language courant:",
+            "currentLanguage": "Langue courante:",
             "defaultValue": "Sélectionner une langue",
             "dialogSubTitle": "\"Copier depuis\" permet de copier le contenu des champs depuis une langue vers la langue courante.",
             "dialogTitle": "Copier depuis",
@@ -62,17 +62,18 @@
             "btnSave": "Sauvegarder"
           },
           "lock": {
-            "deletion": "Vérouillé: Contenu marqué pour suppression",
-            "engine": "Vérouillé par {{userName}}",
-            "user": "Vérouillé par {{userName}}",
-            "validation": "Vérouiller par un workflow de publication",
-            "unknown": "Vérouillé pour une raison inconnue"
+            "deletion": "Vérrouillé: Contenu marqué pour suppression",
+            "engine": "Vérrouillé par {{userName}}",
+            "user": "Vérrouillé par {{userName}}",
+            "validation": "Vérrouiller par un workflow de publication",
+            "unknown": "Vérrouillé pour une raison inconnue"
           },
           "publish": {
-            "name": "Publier maintenant",
+            "name": "Publier maintenant - {{language}}",
+            "shortName": "Publier maintenant",
             "namePolling": "Publication",
             "success": "La publication a été ajoutée à la file d’attente",
-            "error": "Erreur durant la publication"
+            "error": "Erreur lors de la publication"
           },
           "startWorkflow": {
             "name": "Demander une publication"
@@ -124,11 +125,11 @@
         "fields": {
           "actions": {
             "replace": "Modifier",
-            "newTab": "Editer dans un nouvel onglet",
+            "newTab": "Modifier dans un nouvel onglet",
             "clear": "Effacer",
-            "selectAll": "Sélectionnez toutes les valeurs",
+            "selectAll": "Sélectionner toutes les valeurs",
             "add": "Ajouter",
-            "previewTab": "Prévisualisé dans un nouvel onglet"
+            "previewTab": "Prévisualiser dans un nouvel onglet"
           },
           "contentPicker": {
             "notFoundContent": "Référence cassée",
@@ -138,7 +139,7 @@
             "modalFileTitle": "Sélectionner un fichier",
             "modalFolderTitle": "Sélectionner un dossier",
             "modalCategoryTitle": "Sélectionner une catégorie",
-            "modalImageTitle": "Sélectionner an image",
+            "modalImageTitle": "Sélectionner une image",
             "modalPageTitle": "Sélectionner une page",
             "modalSiteTitle": "Sélectionner un site",
             "modalUserTitle": "Sélectionner un utilisateur",
@@ -167,7 +168,7 @@
           "constraintViolation": "{{0}}"
         },
         "tab": {
-          "edit": "Éditer",
+          "edit": "Modifier",
           "advanced": "Options avancées"
         }
       },
@@ -188,7 +189,7 @@
       "error": {
         "queryingContent": "Erreur lors de l'interrogation du contenu: {{details}}",
         "changeSystemName": "Veuillez choisir un autre nom système",
-        "constraintViolations": "Il y a des erreurs de validation! Corrigez les entrées et sauvegarder à nouveau",
+        "constraintViolations": "Il y a des erreurs de validation! Corrigez les entrées et sauvegardez à nouveau",
         "accessDenied": "Certains contenus ne peuvent pas être affichés en raison des autorisations qui ont été appliquées"
       },
       "preview": {
@@ -206,7 +207,7 @@
           "menu": "Nouveau contenu",
           "newMenu": "Nouveau...",
           "contentOfType": "Nouveau : {{typeName}}",
-          "labelModal": "Sélectionner Un Type De Contenu",
+          "labelModal": "Sélectionner un type De contenu",
           "btnDiscard": "ANNULER",
           "btnCreate": "CRÉER",
           "filterLabel": "Rechercher un type de contenu"
@@ -230,23 +231,23 @@
         "listAndOrdering": {
           "title": "Liste de contenu & ordre",
           "ordering": "Ordre",
-          "automatic": "Classement automatique",
+          "automatic": "Tri automatique",
           "orderBy": "Trier par",
-          "description": "Activez le classement automatique pour organiser vos sous-contenus en utilisant au maximum trois critères, ou réorganisez vos sous-contenus manuellement, par glisser-déposer."
+          "description": "Activez le tri automatique pour organiser vos sous-contenus en utilisant au maximum trois critères, ou réorganisez vos sous-contenus manuellement, par glisser-déposer."
         },
         "listSizeLimit": {
           "name": "Nombre d'éléments",
-          "description": "Définissez un nombre limite d'éléments qui peuvent être affichés/créés dans cette zone. Désactivez pour enlever la limite. Si la liste contient plus d'éléments que la limite, alors ces éléments ne seront simplement pas affichés, ils ne seront pas supprimés."
+          "description": "Définissez un nombre limite d'éléments pouvant être affichés/créés dans cette zone. Désactivez pour enlever la limite. Si la liste contient plus d'éléments que la limite, alors ces éléments ne seront simplement pas affichés, ils ne seront pas supprimés."
         }
       },
       "siteSwitcher": {
-        "allSites": "Tous les Sites"
+        "allSites": "Tous les sites"
       },
       "publicationStatusBadge": {
         "publishing": "Publication en cours",
         "modified": "Modifié",
         "notPublished": "Non publié",
-        "published": "Live",
+        "published": "En ligne",
         "warning": "Attention"
       },
       "publicationStatusTooltip": {
@@ -254,7 +255,7 @@
         "published": "Publié par {{userName}} le {{timestamp}}",
         "mandatoryLanguageUnpublishable": "Le contenu ne peut pas être publié dans la langue courante car une propriété obligatoire n'est pas renseignée.",
         "mandatoryLanguageValid": "Le contenu ne sera visible en ligne qu'après publication dans toutes les langues obligatoires.",
-        "conflict": "Un contenu avec le même nom existe déjà en mode live et ne fera pas partie de cette publication",
+        "conflict": "Un contenu portant le même nom existe déjà en ligne et ne sera pas inclus dans cette publication.",
         "unknown": "Statut de publication indisponible"
       },
       "global": {
@@ -266,16 +267,16 @@
         "openLegacy": "Ouvrir l'ancienne interface",
         "cancel": "Annuler",
         "warnings": {
-          "content": "Le contenu doit être modifié directement depuis l'onglet Editer. Cependant, si nécessaire, vous pouvez utiliser l'ancienne interface d'édition. Mais celle-ci sera supprimée dans une future mise à jour.",
-          "options": "Les options additionnelles peuvent être modifiées directement depuis l'onglet Editer. Cependant, si nécessaire, vous pouvez utiliser l'ancienne interface d'édition. Mais celle-ci sera supprimée dans une future mise à jour.",
-          "categories": "Les catégorie associées au contenu peuvent être modifiées directement depuis l'onglet Editer. Cependant, si nécessaire, vous pouvez utiliser l'ancienne interface d'édition. Mais celle-ci sera supprimée dans une future mise à jour.",
-          "metadata": "Les métadonnées peuvent être modifiées directement depuis l'onglet Editer. Cependant, si nécessaire, vous pouvez utiliser l'ancienne interface d'édition. Mais celle-ci sera supprimée dans une future mise à jour.",
-          "layout": "Les options de rendu peuvent être modifiées directement depuis l'onglet Editer. Cependant, si nécessaire, vous pouvez utiliser l'ancienne interface d'édition. Mais celle-ci sera supprimée dans une future mise à jour."
+          "content": "Le contenu doit être modifié directement depuis l'onglet Modifier. Cependant, si nécessaire, vous pouvez utiliser l'ancienne interface d'édition. Mais celle-ci sera supprimée dans une future mise à jour.",
+          "options": "Les options additionnelles peuvent être modifiées directement depuis l'onglet Modifier. Cependant, si nécessaire, vous pouvez utiliser l'ancienne interface d'édition. Mais celle-ci sera supprimée dans une future mise à jour.",
+          "categories": "Les catégories associées au contenu peuvent être modifiées directement depuis l'onglet Modifier. Cependant, si nécessaire, vous pouvez utiliser l'ancienne interface d'édition. Mais celle-ci sera supprimée dans une future mise à jour.",
+          "metadata": "Les métadonnées peuvent être modifiées directement depuis l'onglet Modifier. Cependant, si nécessaire, vous pouvez utiliser l'ancienne interface d'édition. Mais celle-ci sera supprimée dans une future mise à jour.",
+          "layout": "Les options de rendu peuvent être modifiées directement depuis l'onglet Modifier. Cependant, si nécessaire, vous pouvez utiliser l'ancienne interface d'édition. Mais celle-ci sera supprimée dans une future mise à jour."
         }
       },
       "vanityTab": {
         "title": "URLs personnalisées",
-        "label": "Les URLs personnalisées peuvent être gérées depuis un écran dédié, accessible depuis le menu aux 3 points verticaux de la barre d'action, ou via le bouton  \"Gérer les URLs personnalisées\" ci-dessous.",
+        "label": "Les URLs personnalisées peuvent être gérées depuis un écran dédié, accessible depuis le menu à trois points de la barre d'action, ou via le bouton  \"Gérer les URLs personnalisées\" ci-dessous.",
         "noPermissionLabel": "Vous n'avez pas la permission de gérer les URLs personnalisées."
       },
       "selection": {
@@ -298,13 +299,13 @@
           },
           "tabs": {
             "pages": "Pages",
-            "contentFolders": "Dossier de contenu"
+            "contentFolders": "Dossiers de contenu"
           }
         },
         "selectors": {
           "multipleLeftRightSelector": {
             "addAll": "Tout ajouter",
-            "removeAll": "Tout enlever",
+            "removeAll": "Tout retirer",
             "selected": "{{count}} élément sélectionné",
             "selected_plural": "{{count}} éléments sélectionnés"
           }
@@ -330,7 +331,7 @@
         },
         "dropdown": {
           "displayValue": "Dropdown",
-          "description": "Sélectionner une/des valeur(s) à partir d'une liste"
+          "description": "Sélectionner une ou plusieurs valeur(s) dans une liste"
         },
         "picker": {
           "displayValue": "Picker",
@@ -344,7 +345,7 @@
           }
         },
         "dateTimePicker": {
-          "displayValue": "Date time",
+          "displayValue": "Date et heure",
           "description": "Sélectionner une date et un horaire dans un calendrier"
         },
         "datePicker": {
@@ -352,11 +353,11 @@
           "description": "Sélectionner une date dans un calendrier"
         },
         "text": {
-          "displayValue": "Text",
+          "displayValue": "Texte",
           "description": "Champ texte"
         },
         "category": {
-          "displayValue": "Hierarchical Tree selector",
+          "displayValue": "Sélecteur en arborescence",
           "description": "Sélectionner une valeur à partir de données en arbre"
         },
         "tag": {
@@ -364,7 +365,7 @@
           "description": "Sélectionner à partir d'une liste ou créer de nouvelles valeurs"
         },
         "multipleLeftRightSelector": {
-          "displayValue": "Multiple list",
+          "displayValue": "Liste multiple",
           "description": "Sélectionner de nombreuses valeurs à partir d'une liste"
         }
       }
