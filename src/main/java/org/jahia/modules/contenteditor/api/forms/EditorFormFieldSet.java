@@ -321,6 +321,10 @@ public class EditorFormFieldSet implements Comparable<EditorFormFieldSet> {
             newEditorFormFieldSet.setOriginBundle(otherEditorFormFieldSet.getOriginBundle());
         }
 
+        if (otherEditorFormFieldSet.displayed != null) {
+            newEditorFormFieldSet.setDisplayed(otherEditorFormFieldSet.getDisplayed());
+        }
+
         return newEditorFormFieldSet;
     }
 
