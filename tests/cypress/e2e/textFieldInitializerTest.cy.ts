@@ -2,7 +2,7 @@ import {createSite, deleteSite, enableModule} from '@jahia/cypress';
 import {PageComposer} from '../page-object/pageComposer';
 import {SmallTextField, DateField} from '../page-object/fields';
 
-describe.skip('Test the text field initializer', () => {
+describe('Test the text field initializer', () => {
     const siteKey = 'textFieldInitializerTest';
     const langEN = 'en';
     const langFR = 'fr';
