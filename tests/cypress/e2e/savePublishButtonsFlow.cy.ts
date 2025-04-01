@@ -3,7 +3,7 @@ import {SmallTextField} from '../page-object/fields';
 import {JContent} from '../page-object/jcontent';
 import {ContentEditor} from '../page-object';
 
-describe('Test the save publish buttons flow)', () => {
+describe('Test the save publish buttons flow', () => {
     const siteKey = 'savePublishButtonsFlow';
     const sitePath = '/sites/' + siteKey;
     const siteContentPath = sitePath + '/contents';
