@@ -414,7 +414,10 @@ describe('Test the text field initializer', () => {
 
         cy.log('Delete previous textFieldInitializerTest content');
         pageComposer.openContextualMenuOnContent(`div[path="/sites/${siteKey}/home/area-main/englishtitle"] div.gwt-HTML.x-component`).delete();
-        pageComposer.openContextualMenuOnContent(`div[path="/sites/${siteKey}/home/area-main/englishtitle"] div.gwt-HTML.x-component`).deletePermanently();
+        pageComposer.refresh();
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(5000);
+        pageComposer.openContextualMenuOnContent(`div[jahiatype="module"][path="/sites/${siteKey}/home/area-main/englishtitle"] div.gwt-HTML.x-component`).deletePermanently();
 
         cy.log('Create en check new textFieldInitializerTest content');
 
