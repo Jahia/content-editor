@@ -62,11 +62,11 @@
             "btnSave": "Sauvegarder"
           },
           "lock": {
-            "deletion": "Vérrouillé: Contenu marqué pour suppression",
-            "engine": "Vérrouillé par {{userName}}",
-            "user": "Vérrouillé par {{userName}}",
-            "validation": "Vérrouiller par un workflow de publication",
-            "unknown": "Vérrouillé pour une raison inconnue"
+            "deletion": "Verrouillé: Contenu marqué pour suppression",
+            "engine": "Verrouillé par {{userName}}",
+            "user": "Verrouillé par {{userName}}",
+            "validation": "Verrouillé par un workflow de publication",
+            "unknown": "Verrouillé pour une raison inconnue"
           },
           "publish": {
             "name": "Publier maintenant - {{language}}",
