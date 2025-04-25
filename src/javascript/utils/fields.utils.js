@@ -93,18 +93,15 @@ function updateValue({field, value, lang, nodeData, sections, mixinsToMutate, pr
         }
     } else if (nodeData) {
         // Check if props existed before, to remove it
-        const nodeProperty = nodeData.properties.find(prop => prop.name === field.propertyName);
-        if (nodeProperty && nodeProperty[getValuePropName(field).name]) {
-            const fieldSetName = getDynamicFieldSetNameOfField(sections, field);
-            if (!fieldSetName ||
-                (fieldSetName &&
-                    !mixinsToMutate.mixinsToDelete.includes(fieldSetName) &&
-                    (hasNodeMixin(nodeData, fieldSetName) || mixinsToMutate.mixinsToAdd.includes(fieldSetName)))) {
-                propsToDelete.push({
-                    name: field.propertyName,
-                    language: lang
-                });
-            }
+        const fieldSetName = getDynamicFieldSetNameOfField(sections, field);
+        if (!fieldSetName ||
+            (fieldSetName &&
+                !mixinsToMutate.mixinsToDelete.includes(fieldSetName) &&
+                (hasNodeMixin(nodeData, fieldSetName) || mixinsToMutate.mixinsToAdd.includes(fieldSetName)))) {
+            propsToDelete.push({
+                name: field.propertyName,
+                language: lang
+            });
         }
     }
 
