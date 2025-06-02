@@ -11781,10 +11781,10 @@ react-draggable@^4.4.2:
     clsx "^1.1.1"
     prop-types "^15.8.1"
 
-react-dropdown-tree-select@^2.3.2:
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/react-dropdown-tree-select/-/react-dropdown-tree-select-2.7.1.tgz#a8c7071b957b95fc3921332d03cc2d1d00551358"
-  integrity sha512-0Sbhy+1mpZLILeR/mQ3+Nwun0xJDnPVR14N/azsaX+RXzRupxMexoGYzcPBGaeyFnN1oSIQ6yxwQDOXfnn0bwQ==
+react-dropdown-tree-select@^2.8.0:
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/react-dropdown-tree-select/-/react-dropdown-tree-select-2.8.0.tgz#aaafc46a4df046fece13df90ca4224aaeb6a335d"
+  integrity sha512-Nu8Aur/qgNgJgxeW10dkyKHGBzyhyjIZBngmuM6gW1oNBs3UE9IcYUlUz2c6rLBEcAQYtkkp4pvu749mXKE0Dw==
   dependencies:
     array.partial "^1.0.5"
     react-infinite-scroll-component "^4.0.2"
