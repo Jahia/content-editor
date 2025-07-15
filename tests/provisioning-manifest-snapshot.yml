@@ -34,10 +34,10 @@
   password: ${env:NEXUS_PASSWORD}
 
 - installBundle:
-    - 'mvn:org.jahia.modules/jcontent/2.15.0'
+    - 'mvn:org.jahia.modules/jcontent/2.19.0'
     - 'mvn:org.jahia.modules/content-editor'
     - 'mvn:org.jahia.test/content-editor-test-module'
-    - 'mvn:org.jahia.modules/site-settings-seo/4.4.0'
+    - 'mvn:org.jahia.modules/site-settings-seo/4.5.0'
   autoStart: true
   uninstallPreviousVersion: true
 
