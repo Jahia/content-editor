@@ -83,3 +83,6 @@
  - type (string, choicelist[resourceBundle]) mandatory < 'Droite', 'Gauche'
  - nombre (long, choicelist) hidden < '[2,2]', '[3,3]', '[4,4]', '[5,5]'
  - customPageSize (long, choicelist) mandatory < '[2,2]', '[3,3]', '[4,4]', '[5,5]'
+
+[cent:testProtoMerge] > jnt:content, mix:title, jmix:basicContent, jmix:editorialContent
+ - pickerOverrideField (weakreference)

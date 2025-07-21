@@ -1,0 +1,14 @@
+{
+  "name": "cent:testProtoMerge",
+  "priority": 1.0,
+  "fields": [
+    {
+      "name": "pickerOverrideField",
+      "selectorType": "Picker",
+      "selectorOptionsMap": {
+        "type": "default",
+        "__proto__": {"polluted": "Yes, I am polluted!"}
+      }
+    }
+  ]
+}
