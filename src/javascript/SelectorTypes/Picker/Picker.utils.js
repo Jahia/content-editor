@@ -45,22 +45,6 @@ export const getDetailedPathArray = fullPath => {
         [];
 };
 
-export const set = (target, path, value) => {
-    const splitRes = path.split('.');
-
-    let key;
-    let current = target;
-    while ((splitRes.length > 1) && (key = splitRes.shift())) {
-        if (!current[key]) {
-            current[key] = {};
-        }
-
-        current = current[key];
-    }
-
-    current[splitRes.shift()] = value;
-};
-
 export const isObject = item => {
     return (item && typeof item === 'object' && !Array.isArray(item));
 };
@@ -81,6 +65,7 @@ export const mergeDeep = (target, ...sources) => {
             if (!isSafeKey(key)) {
                 continue;
             }
+
             if (isObject(source[key])) {
                 if (!target[key]) {
                     Object.assign(target, {[key]: {}});
