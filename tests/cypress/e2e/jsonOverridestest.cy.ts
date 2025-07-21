@@ -60,13 +60,13 @@ describe('Test that the json overrides deployed in the test modules are behaving
     });
 
     it('can filter out proto fields in json overrides', () => {
-        const jcontent = JContent.visit(siteKey, 'en', 'content-folders/contents');
         const ce = jcontent.editComponentByText('testProtoMerge');
         ce.getTitle().should('be.visible').and('contain', 'testProtoMerge');
 
         cy.log('Test proto field does not pollute js objects');
         cy.window().then(win => {
             const result = win.eval('({}).polluted');
+            // eslint-disable-next-line no-unused-expressions
             expect(result).to.be.undefined;
         });
     });
