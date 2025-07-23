@@ -61,9 +61,9 @@ export const mergeDeep = (target, ...sources) => {
     const source = sources.shift();
 
     if (isObject(target) && isObject(source)) {
-        for (const key in source) {
+        Object.getOwnPropertyNames(source).forEach(key => {
             if (!isSafeKey(key)) {
-                continue;
+                return;
             }
 
             if (isObject(source[key])) {
@@ -75,7 +75,7 @@ export const mergeDeep = (target, ...sources) => {
             } else {
                 Object.assign(target, {[key]: source[key]});
             }
-        }
+        });
     }
 
     return mergeDeep(target, ...sources);
