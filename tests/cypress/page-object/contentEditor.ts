@@ -162,6 +162,10 @@ export class ContentEditor extends BasePage {
         return r;
     }
 
+    getTitle() {
+        return cy.get('#contenteditor-dialog-title');
+    }
+
     toggleOption(optionType: string, optionFieldName: string) {
         cy.get(`span[data-sel-role-dynamic-fieldset="${optionType}"]`).scrollIntoView();
         cy.get(`span[data-sel-role-dynamic-fieldset="${optionType}"]`).find('input').click({force: true});

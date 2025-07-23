@@ -81,7 +81,7 @@ if [[ -d artifacts/ && $MANIFEST == *"build"* ]]; then
   for file in $(ls -1 *-SNAPSHOT.jar | sort -n)
   do
     echo "$(date +'%d %B %Y - %k:%M') [MODULE_INSTALL] == Submitting module from: $file =="
-    curl -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script='[{"installAndStartBundle":"'"$file"'", "forceUpdate":true}]' --form file=@$file
+    curl -u root:${SUPER_USER_PASSWORD} -X POST ${JAHIA_URL}/modules/api/provisioning --form script='[{"installAndStartBundle":"'"$file"'", "forceUpdate":true, "uninstallPreviousVersion":true}]' --form file=@$file
     echo
     echo "$(date +'%d %B %Y - %k:%M') [MODULE_INSTALL] == Module submitted =="
   done

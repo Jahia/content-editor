@@ -1,4 +1,4 @@
-import {createSite, deleteSite, enableModule} from '@jahia/cypress';
+import {addNode, createSite, deleteSite, enableModule} from '@jahia/cypress';
 import {JContent} from '../page-object';
 
 describe('Test that the json overrides deployed in the test modules are behaving as expected', () => {
@@ -17,6 +17,12 @@ describe('Test that the json overrides deployed in the test modules are behaving
     before(function () {
         createSite(siteKey, siteConfig);
         enableModule('content-editor-test-module', siteKey);
+        addNode({
+            parentPathOrId: `/sites/${siteKey}/contents`,
+            name: 'testProtoMerge',
+            primaryNodeType: 'cent:testProtoMerge',
+            properties: [{name: 'jcr:title', language: 'en', value: 'testProtoMerge'}]
+        });
     });
 
     after(function () {
@@ -51,5 +57,17 @@ describe('Test that the json overrides deployed in the test modules are behaving
         multipleLeftRightField.addNewValue('Anime: Albator');
         multipleLeftRightField.checkValues(['Anime: Albator']);
         contentEditor.cancelAndDiscard();
+    });
+
+    it('can filter out proto fields in json overrides', () => {
+        const ce = jcontent.editComponentByText('testProtoMerge');
+        ce.getTitle().should('be.visible').and('contain', 'testProtoMerge');
+
+        cy.log('Test proto field does not pollute js objects');
+        cy.window().then(win => {
+            const result = win.eval('({}).polluted');
+            // eslint-disable-next-line no-unused-expressions
+            expect(result).to.be.undefined;
+        });
     });
 });
