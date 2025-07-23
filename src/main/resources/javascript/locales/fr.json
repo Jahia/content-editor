@@ -28,7 +28,7 @@
             "btnCancel": "Annuler",
             "currentLanguage": "Langue courante:",
             "defaultValue": "Sélectionner une langue",
-            "dialogSubTitle": "\"Copier depuis\" permet de copier le contenu des champs depuis une langue vers la langue courante.",
+            "dialogSubTitle": "\"Copier depuis\" permet de copier le contenu des champs depuis une autre langue vers la langue courante.",
             "dialogTitle": "Copier depuis",
             "listLabel": "Copier depuis",
             "name": "Copier depuis une langue"
