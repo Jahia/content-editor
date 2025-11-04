@@ -17,13 +17,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-         supported_branches: ["${{ github.event.repository.default_branch }}", '3_5_X']
+         supported_branches: ["${{ github.event.repository.default_branch }}", '3_x']
     container:
       image: jahia/cimg-mvn-cache:ga_cimg_openjdk_8.0.312-node
       credentials:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
     steps:
+      - name: Setup env variables
+        id: vars
+        shell: bash
+        run: |
+          SAFE_BRANCH=$(echo "${{ matrix.supported_branches }}" | tr '/ ' '_')
+          echo "suffix=-${SAFE_BRANCH}" >> $GITHUB_OUTPUT
       - uses: actions/checkout@v4
         with:
           ref: ${{ matrix.supported_branches }}
@@ -31,12 +37,12 @@ jobs:
         with:
           nexus_username: ${{ secrets.NEXUS_USERNAME }}
           nexus_password: ${{ secrets.NEXUS_PASSWORD }}
-          module_id: ${{ env.MODULE_ID }}
+          github_artifact_suffix: ${{ steps.vars.outputs.suffix }}
           mvn_settings_filepath: '.github/maven.settings.xml'
       - uses: jahia/jahia-modules-action/sonar-analysis@v2
         with:
           primary_release_branch: ${{ matrix.supported_branches }}
-          build_artifacts: build-artifacts
+          build_artifacts: build-artifacts${{ steps.vars.outputs.suffix }}
           github_pr_id: ${{github.event.number}}
           sonar_url: ${{ secrets.SONAR_URL }}
           sonar_token: ${{ secrets.SONAR_TOKEN }}
