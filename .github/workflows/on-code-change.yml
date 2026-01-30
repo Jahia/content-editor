@@ -98,6 +98,7 @@ jobs:
           jahia_cluster_enabled: false
           should_skip_testrail: true
           jahia_image: ${{ matrix.jahia_image }}
+          github_token: ${{ secrets.GH_ISSUES_PRS_CHORES }}
           github_artifact_name: ce-nightly-${{ matrix.config_file }}-${{ github.run_number }}
           jahia_artifact_name: ce-nightly-${{ matrix.config_file }}-${{ github.run_number }}
           bastion_ssh_private_key: ${{ secrets.BASTION_SSH_PRIVATE_KEY_JAHIACI }}
