@@ -23,7 +23,7 @@
         },
         "action": {
           "copyLanguage": {
-            "bottomText": "When clicking \"APPLY\" you will overwrite all fields with the newly chosen language.",
+            "bottomText": "When clicking \"APPLY\" you will overwrite all fields with values from the chosen language.",
             "btnApply": "Apply",
             "btnCancel": "Cancel",
             "currentLanguage": "Current language:",
@@ -31,7 +31,7 @@
             "dialogSubTitle": "\"Copy from\" allows you to copy ALL content fields from another language into the current language.",
             "dialogTitle": "Copy from",
             "listLabel": "Copy from",
-            "name": "Copy from languages"
+            "name": "Copy from language"
           },
           "save": {
             "name": "Save",
