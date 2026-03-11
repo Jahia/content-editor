@@ -20,6 +20,7 @@ jobs:
     with:
       module_id: content-editor
       jahia_image: ${{ matrix.jahia_image }}
+      incident_service: content-editor-${{ matrix.config_file }}
       tests_profile: ${{ matrix.config_file }}
       provisioning_manifest: provisioning-manifest-build.yml
       artifact_prefix: ce-nightly-${{ matrix.config_file }}
