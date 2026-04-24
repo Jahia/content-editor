@@ -229,7 +229,7 @@ A DX Module can define static forms and fieldSets by adding JSON files in the `M
 location, then in `forms` or `fieldSets` sub-directory. The files should have a meaning full name, for example for the
 `qant:allFields` node type we recommend replacing the colon (:) by an underscore so that the file name become `qant_allFields.json`.
 
-Here's an example of a JSON static form definition coming from this [example overrides](https://github.com/Jahia/content-editor/tree/master/src/test/resources/META-INF/jahia-content-editor-forms/overrides):
+Here's an example of a JSON static form definition coming from this [example overrides](https://github.com/Jahia/content-editor/tree/main/src/test/resources/META-INF/jahia-content-editor-forms/overrides):
 
 We will now present the different object types that are used in static form definitions.
 
@@ -250,7 +250,7 @@ such as `content`, `classification`, `metadata`. A section definition is compose
 - a label key for localization
 - a requiredPermission name
 
-You can find examples of section definitions in the the [`default` form file](https://github.com/Jahia/content-editor/blob/master/src/main/resources/META-INF/jahia-content-editor-forms/forms/default.json).
+You can find examples of section definitions in the the [`default` form file](https://github.com/Jahia/content-editor/blob/main/src/main/resources/META-INF/jahia-content-editor-forms/forms/default.json).
 
 Sections themselves contain field sets.
 
