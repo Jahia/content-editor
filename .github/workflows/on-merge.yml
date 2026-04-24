@@ -56,6 +56,7 @@ jobs:
     uses: Jahia/jahia-modules-action/.github/workflows/reusable-integration-tests.yml@v2
     with:
       module_id: content-editor
+      module_branch: main
       jahia_image: ${{ matrix.jahia_image }}
       incident_service: content-editor-${{ matrix.config_file }}
       tests_profile: ${{ matrix.config_file }}
