@@ -80,6 +80,7 @@ jobs:
     uses: Jahia/jahia-modules-action/.github/workflows/reusable-integration-tests.yml@v2
     with:
       module_id: content-editor
+      module_branch: ${{ github.ref }}
       jahia_image: ${{ matrix.jahia_image }}
       tests_profile: ${{ matrix.config_file }}
       provisioning_manifest: provisioning-manifest-build.yml
