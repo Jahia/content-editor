@@ -1,12 +1,12 @@
 # This workflow is triggered every time a change is pushed to any branches
 # Github actions command reference: https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions
-name: On merge to master
+name: On merge to main
 
 # The workflow could also be triggered on PRs
 on:
   push:
     branches:
-      - 'master'
+      - 'main'
       - '[0-9]_[0-9]_[Xx]'
     tags-ignore:
       - '**'
@@ -56,6 +56,7 @@ jobs:
     uses: Jahia/jahia-modules-action/.github/workflows/reusable-integration-tests.yml@v2
     with:
       module_id: content-editor
+      module_branch: main
       jahia_image: ${{ matrix.jahia_image }}
       incident_service: content-editor-${{ matrix.config_file }}
       tests_profile: ${{ matrix.config_file }}
@@ -69,7 +70,7 @@ jobs:
   publish:
     name: Publish module
     needs: build
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     env:
       NEXUS_INTERNAL_URL: https://devtools.jahia.com/nexus/content/groups/internal/
