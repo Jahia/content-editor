@@ -30,16 +30,15 @@ if [[ "${JAHIA_CLUSTER_ENABLED}" == "true" ]]; then
     if [[ $1 == "notests" ]]; then
         docker-compose up -d --renew-anon-volumes mariadb jahia jahia-browsing-a jahia-browsing-b
     else
-        docker-compose up --abort-on-container-exit --renew-anon-volumes cypress mariadb jahia jahia-browsing-a jahia-browsing-b
+        docker-compose up -d --abort-on-container-exit --renew-anon-volumes cypress mariadb jahia jahia-browsing-a jahia-browsing-b
+        docker container attach --no-stdin cypress
     fi
 else
     echo "$(date +'%d %B %Y - %k:%M') [JAHIA_CLUSTER_ENABLED] == Starting a single processing node (no cluster) =="
     if [[ $1 == "notests" ]]; then
         docker-compose up -d --renew-anon-volumes mariadb jahia
     else
-        docker-compose up --renew-anon-volumes -d mariadb jahia
-        docker ps -a
-        docker stats --no-stream
-        docker-compose up --abort-on-container-exit cypress
+        docker-compose up -d --renew-anon-volumes -d mariadb jahia cypress
+        docker container attach --no-stdin cypress
     fi
 fi
