@@ -25,6 +25,6 @@ jobs:
       provisioning_manifest: provisioning-manifest-build.yml
       artifact_prefix: ce-nightly-${{ matrix.config_file }}
       testrail_project: Content Editor
-      jahia_cluster_enabled: true
+      jahia_cluster_enabled: false
       timeout_job: 65
       timeout_step: 50
