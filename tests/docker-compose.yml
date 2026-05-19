@@ -7,6 +7,8 @@ services:
             resources:
                 limits:
                     memory: 1gb
+                reservations:
+                    memory: 512mb
         networks:
             - stack
         command: --max_allowed_packet=1073741824 --transaction-isolation=READ-UNCOMMITTED --innodb-lock-wait-timeout=10
@@ -24,6 +26,8 @@ services:
         deploy:
             resources:
                 limits:
+                    memory: 6gb
+                reservations:
                     memory: 4gb
         depends_on:
             - mariadb
@@ -46,7 +50,7 @@ services:
             SUPER_USER_PASSWORD: ${JAHIA_PASSWORD}
             CLUSTER_ENABLED: '${JAHIA_CLUSTER_ENABLED}'
             PROCESSING_SERVER: 'true'
-            MAX_RAM_PERCENTAGE: 95
+            MAX_RAM_PERCENTAGE: 80
             JAHIA_PROPERTIES: ${JAHIA_PROPERTIES}
             CATALINA_OPTS: ${CATALINA_OPTS}
             RESTORE_MODULE_STATES: 'false'
@@ -62,6 +66,8 @@ services:
         deploy:
             resources:
                 limits:
+                    memory: 6gb
+                reservations:
                     memory: 4gb
         depends_on:
             - mariadb
@@ -82,7 +88,7 @@ services:
             CLUSTER_ENABLED: '${JAHIA_CLUSTER_ENABLED}'
             PROCESSING_SERVER: 'false'
             PROCESSING_HOST: jahia
-            MAX_RAM_PERCENTAGE: 95
+            MAX_RAM_PERCENTAGE: 80
             JAHIA_PROPERTIES: ${JAHIA_PROPERTIES}
             CATALINA_OPTS: ${CATALINA_OPTS}
             RESTORE_MODULE_STATES: 'false'
@@ -97,6 +103,8 @@ services:
         deploy:
             resources:
                 limits:
+                    memory: 6gb
+                reservations:
                     memory: 4gb
         depends_on:
             - mariadb
@@ -117,7 +125,7 @@ services:
             CLUSTER_ENABLED: '${JAHIA_CLUSTER_ENABLED}'
             PROCESSING_SERVER: 'false'
             PROCESSING_HOST: jahia
-            MAX_RAM_PERCENTAGE: 95
+            MAX_RAM_PERCENTAGE: 80
             JAHIA_PROPERTIES: ${JAHIA_PROPERTIES}
             CATALINA_OPTS: ${CATALINA_OPTS}
             RESTORE_MODULE_STATES: 'false'
@@ -134,6 +142,8 @@ services:
         resources:
           limits:
             memory: 4gb
+          reservations:
+            memory: 2gb
       depends_on:
         - jahia
       environment:
