@@ -46,7 +46,7 @@ services:
             SUPER_USER_PASSWORD: ${JAHIA_PASSWORD}
             CLUSTER_ENABLED: '${JAHIA_CLUSTER_ENABLED}'
             PROCESSING_SERVER: 'true'
-            MAX_RAM_PERCENTAGE: 95
+            MAX_RAM_PERCENTAGE: 70
             JAHIA_PROPERTIES: ${JAHIA_PROPERTIES}
             CATALINA_OPTS: ${CATALINA_OPTS}
             RESTORE_MODULE_STATES: 'false'
@@ -82,7 +82,7 @@ services:
             CLUSTER_ENABLED: '${JAHIA_CLUSTER_ENABLED}'
             PROCESSING_SERVER: 'false'
             PROCESSING_HOST: jahia
-            MAX_RAM_PERCENTAGE: 95
+            MAX_RAM_PERCENTAGE: 70
             JAHIA_PROPERTIES: ${JAHIA_PROPERTIES}
             CATALINA_OPTS: ${CATALINA_OPTS}
             RESTORE_MODULE_STATES: 'false'
@@ -117,7 +117,7 @@ services:
             CLUSTER_ENABLED: '${JAHIA_CLUSTER_ENABLED}'
             PROCESSING_SERVER: 'false'
             PROCESSING_HOST: jahia
-            MAX_RAM_PERCENTAGE: 95
+            MAX_RAM_PERCENTAGE: 70
             JAHIA_PROPERTIES: ${JAHIA_PROPERTIES}
             CATALINA_OPTS: ${CATALINA_OPTS}
             RESTORE_MODULE_STATES: 'false'
